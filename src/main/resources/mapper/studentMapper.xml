@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hwadee.IOTS_SCS.entity.mapper.StudentMapper">
+    <!-- -->
+    <select id="getStudentById" resultType="com.hwadee.IOTS_SCS.entity.POJO.User">
+        select * from users WHERE uid=#{studentId} AND role='student'
+    </select>
+
+    <select id="getStudentByName" resultType="com.hwadee.IOTS_SCS.entity.POJO.User">
+        select * from users WHERE account=#{studentName} AND role='student'
+    </select>
+
+</mapper>

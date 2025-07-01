@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hwadee.IOTS_SCS.entity.mapper.CourseMapper">
+    <select id="getAllCoursesByStatus" resultType="com.hwadee.IOTS_SCS.entity.DTO.CourseDTO">
+        SELECT course_id, course_name, users.name AS teacher_name FROM courses, users
+        WHERE
+            teacher_id=uid AND
+            users.role='teacher' AND
+            course_id in (
+                SELECT course_id FROM student_course JOIN users
+                WHERE
+                    account=#{account} AND
+                    `status`=#{status}
+            )
+    </select>
+
+    <select id="getAllCourses" resultType="com.hwadee.IOTS_SCS.entity.DTO.CourseDTO">
+        SELECT course_id, course_name, users.name AS teacher_name FROM courses, users
+        WHERE
+            teacher_id=uid AND
+            users.role='teacher' AND
+            course_id in (
+                SELECT course_id FROM student_course JOIN users
+                WHERE
+                    account=#{account}
+            )
+    </select>
+
+    <select id="getCourseInfo" resultType="com.hwadee.IOTS_SCS.entity.DTO.CourseDTO">
+        select * from courses
+                WHERE course_id=#{course_id}
+    </select>
+</mapper>

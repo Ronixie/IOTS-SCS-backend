@@ -1,7 +1,7 @@
 package com.hwadee.IOTS_SCS.controller;
 
 import com.hwadee.IOTS_SCS.common.result.CommonResult;
-import com.hwadee.IOTS_SCS.entity.DTO.FileDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.response.FileDTO;
 import com.hwadee.IOTS_SCS.service.FileService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -56,7 +56,8 @@ public class FileController {
     }
 
     private File findFileById(String fileId) {
-        File dir = new File("/data/upload/");
+        File dir = new File(System.getProperty("user.dir") + "/res/file/");
+
         File[] matched = dir.listFiles((d, name) -> name.startsWith(fileId));
         return (matched != null && matched.length > 0) ? matched[0] : new File("");
     }

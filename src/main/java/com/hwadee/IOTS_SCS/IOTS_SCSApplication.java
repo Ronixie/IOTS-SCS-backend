@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication(scanBasePackages = "com.hwadee.IOTS_SCS")
-@MapperScan(basePackages = "com.hwadee.IOTS_SCS.entity.mapper")
+@MapperScan(basePackages = "com.hwadee.IOTS_SCS.mapper")
 public class IOTS_SCSApplication {
 
     public static void main(String[] args) {

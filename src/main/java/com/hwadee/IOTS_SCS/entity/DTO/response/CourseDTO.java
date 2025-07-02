@@ -1,8 +1,6 @@
-package com.hwadee.IOTS_SCS.entity.DTO;
+package com.hwadee.IOTS_SCS.entity.DTO.response;
 
 import lombok.Data;
-
-import java.util.Date;
 
 /**
 * @ProjectName: smart_study

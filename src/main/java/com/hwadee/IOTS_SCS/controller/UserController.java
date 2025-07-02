@@ -1,11 +1,12 @@
 package com.hwadee.IOTS_SCS.controller;
 
 import com.hwadee.IOTS_SCS.common.result.CommonResult;
-import com.hwadee.IOTS_SCS.entity.POJO.User;
+import com.hwadee.IOTS_SCS.entity.DTO.request.UserDTO;
 import com.hwadee.IOTS_SCS.service.UserService;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -49,8 +50,16 @@ public class UserController {
         return userService.getUserInfo(uid);
     }
 
-    @PutMapping("/users/{uid}")
-    public CommonResult<Object> updateUser(@PathVariable("uid") String uid, @RequestBody User user) {
+    /**
+     *
+     * @param uid 用户id
+     * @param user 用户更新信息
+     * @return
+     */
+    @PutMapping(value = "/users/{uid}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public CommonResult<Object> updateUser(
+            @PathVariable("uid") String uid,
+            @ModelAttribute UserDTO user) {
         return userService.updateUser(uid, user);
     }
 

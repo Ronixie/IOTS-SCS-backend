@@ -1,3 +1,8 @@
+package com.hwadee.IOTS_SCS.mapper;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.hwadee.IOTS_SCS.entity.POJO.ApiAccessLog;
+
 /**
 * @ProjectName: IOTS-SCS-backend
 * @Title: LogMapper
@@ -8,5 +13,6 @@
 * @version V1.0
 * Copyright (c) 2025, qiershi2006@h163.com All Rights Reserved.
 */
-public class LogMapper {
+public interface LogMapper extends BaseMapper<ApiAccessLog> {
+    int insert(ApiAccessLog log);
 }

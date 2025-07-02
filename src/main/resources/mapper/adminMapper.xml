@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hwadee.IOTS_SCS.mapper.AdminMapper">
+    <select id="getUserByAccount" resultType="com.hwadee.IOTS_SCS.entity.POJO.User">
+        select * FROM users WHERE account=#{account} AND role="admin";
+    </select>
+
+    <select id="getRoleByUid" resultType="String">
+        select role FROM users WHERE uid=#{uid};
+    </select>
+
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="uid" parameterType="com.hwadee.IOTS_SCS.entity.POJO.User">
+        INSERT INTO users (account, password, name, identity, role) VALUES(#{account},#{password},#{name},#{identity},#{role});
+    </insert>
+
+    <update id="resetPassword" parameterType="String">
+        UPDATE users SET
+                    password='123456'
+                    WHERE
+                    uid=#{uid};
+    </update>
+</mapper>

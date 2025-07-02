@@ -39,11 +39,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (header != null && header.startsWith("Bearer ")) {
             String token = header.substring(7);
             if (jwtUtil.validateToken(token)) {
-                String username = jwtUtil.getAccountFromToken(token);
+                String uid = jwtUtil.getUidFromToken(token);
 
                 // 设置认证上下文（权限可根据需要添加）
                 UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(username, null, Collections.emptyList());
+                        new UsernamePasswordAuthenticationToken(uid, null, Collections.emptyList());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hwadee.IOTS_SCS.mapper.LogMapper">
+    <insert id="insert" parameterType="com.hwadee.IOTS_SCS.entity.POJO.ApiAccessLog">
+        INSERT INTO activity_logs (user_id, ip, uri, query, duration_ms, status_code, user_agent, created_at)
+        VALUES(#{userId}, #{ip}, #{uri}, #{query}, #{durationMs}, #{statusCode}, #{userAgent}, #{createdAt});
+    </insert>
+</mapper>

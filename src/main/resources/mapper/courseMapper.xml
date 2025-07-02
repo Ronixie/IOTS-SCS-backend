@@ -3,34 +3,51 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.hwadee.IOTS_SCS.entity.mapper.CourseMapper">
-    <select id="getAllCoursesByStatus" resultType="com.hwadee.IOTS_SCS.entity.DTO.CourseDTO">
+<mapper namespace="com.hwadee.IOTS_SCS.mapper.CourseMapper">
+    <select id="getAllCoursesByStatus" resultType="com.hwadee.IOTS_SCS.entity.DTO.response.CourseDTO">
         SELECT course_id, course_name, users.name AS teacher_name FROM courses, users
         WHERE
             teacher_id=uid AND
             users.role='teacher' AND
             course_id in (
-                SELECT course_id FROM student_course JOIN users
+                SELECT course_id FROM student_course
                 WHERE
-                    account=#{account} AND
+                    student_id=#{uid} AND
                     `status`=#{status}
-            )
+            );
     </select>
 
-    <select id="getAllCourses" resultType="com.hwadee.IOTS_SCS.entity.DTO.CourseDTO">
+    <select id="getAllCourses" resultType="com.hwadee.IOTS_SCS.entity.DTO.response.CourseDTO">
         SELECT course_id, course_name, users.name AS teacher_name FROM courses, users
         WHERE
             teacher_id=uid AND
             users.role='teacher' AND
             course_id in (
-                SELECT course_id FROM student_course JOIN users
+                SELECT course_id FROM student_course
                 WHERE
-                    account=#{account}
-            )
+                    student_id=#{uid}
+            );
     </select>
 
-    <select id="getCourseInfo" resultType="com.hwadee.IOTS_SCS.entity.DTO.CourseDTO">
+    <select id="getCourseInfo" resultType="com.hwadee.IOTS_SCS.entity.POJO.Course">
         select * from courses
-                WHERE course_id=#{course_id}
+                WHERE course_id=#{courseId};
     </select>
+
+    <select id="getCourseLessons" resultType="com.hwadee.IOTS_SCS.entity.POJO.Lesson">
+        select * from lessons
+                WHERE course_id=#{courseId};
+    </select>
+
+    <select id="getCourseLessonInfo" resultType="com.hwadee.IOTS_SCS.entity.POJO.Lesson">
+        select * from lessons
+                WHERE lesson_id=#{lesson_id};
+    </select>
+    <update id="completeLesson" parameterType="String">
+        update student_lesson SET
+                                is_completed='1'
+                            WHERE
+                                lesson_id=#{leesonId} AND
+                                student_id=#{uid};
+    </update>
 </mapper>

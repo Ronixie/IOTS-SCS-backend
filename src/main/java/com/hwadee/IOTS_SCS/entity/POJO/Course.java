@@ -1,7 +1,10 @@
 package com.hwadee.IOTS_SCS.entity.POJO;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+
+import java.util.Date;
 
 /**
 * @ProjectName: smart_study
@@ -15,12 +18,13 @@ import lombok.Data;
 */
 @Data
 public class Course {
-    @TableId("course_id")
-    private Long id;
+    private Long courseId;
     private String courseName;
     private Long teacherId;
     private double credit;
     private String description;
     public String coverImageUrl;
-
+    public int totalLessons;
+    public Date startDate;
+    public Date endDate;
 }

@@ -1,6 +1,6 @@
 package com.hwadee.IOTS_SCS.service;
 
-import com.hwadee.IOTS_SCS.entity.DTO.FileDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.response.FileDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.multipart.MultipartFile;
 

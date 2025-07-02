@@ -1,15 +1,20 @@
 package com.hwadee.IOTS_SCS.service.impl;
 
 import com.hwadee.IOTS_SCS.common.result.CommonResult;
+import com.hwadee.IOTS_SCS.entity.DTO.request.UserDTO;
+import com.hwadee.IOTS_SCS.entity.POJO.ApiAccessLog;
 import com.hwadee.IOTS_SCS.entity.POJO.User;
+import com.hwadee.IOTS_SCS.mapper.AdminMapper;
+import com.hwadee.IOTS_SCS.mapper.LogMapper;
 import com.hwadee.IOTS_SCS.service.UserService;
-import com.hwadee.IOTS_SCS.entity.mapper.StudentMapper;
+import com.hwadee.IOTS_SCS.mapper.StudentMapper;
 import com.hwadee.IOTS_SCS.util.JwtUtil;
 
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 
 /**
@@ -30,6 +35,12 @@ public class UserServiceImpl implements UserService {
     StudentMapper studentMapper;
 
     @Autowired
+    AdminMapper adminMapper;
+
+    @Autowired
+    LogMapper logMapper;
+
+    @Autowired
     JwtUtil jwtUtil;
 
     /**
@@ -45,21 +56,39 @@ public class UserServiceImpl implements UserService {
 
         System.out.println("\nvalue=[" + value + "]\nkey=[" + key + "]\nidentity=[" + identity + "]\n");
 
-        User student = studentMapper.getStudentByName(value.trim());
-        if (student == null) {
+        User user = new User();
+        switch (identity) {
+            case 0:
+                user = adminMapper.getUserByAccount(value.trim());
+                break;
+            case 1:
+                user = studentMapper.getStudentByAccount(value.trim());
+                break;
+            case 2:
+                break;
+            default:
+                return CommonResult.error(404,"身份不存在");
+        }
+        if (user.getRole().isEmpty()) {
             return CommonResult.error(404,"用户不存在");
         }
 
-        if (key.equals(student.getPassword())) {
-            result.put("tokens", jwtUtil.generateToken(value));
+        if (key.equals(user.getPassword())) {
+            result.put("tokens", jwtUtil.generateToken(String.valueOf(user.getUid())));
 
             HashMap<String, Object> userInfo = new HashMap<>();
-            userInfo.put("uid", student.getUid());
-            userInfo.put("account", student.getAccount());
-            userInfo.put("role", student.getRole());
-            userInfo.put("avatar_url", student.getAvatarUrl());
+            userInfo.put("uid", user.getUid());
+            userInfo.put("account", user.getAccount());
+            userInfo.put("role", user.getRole());
+            userInfo.put("avatar_url", user.getAvatarUrl());
 
             result.put("userInfo",userInfo);
+
+            ApiAccessLog log = new ApiAccessLog();
+            log.setUserId(user.getUid());
+            log.setUri("/api/auth/login");
+            log.setCreatedAt(LocalDateTime.now());
+            logMapper.insert(log);
 
             return CommonResult.success(result);
         }
@@ -81,12 +110,14 @@ public class UserServiceImpl implements UserService {
     /**
      *
      * @param uid 用户id
-     * @param user 用户更新信息
+     * @param dto 用户更新信息
      * @return 更新完成信息
      */
     @Override
-    public CommonResult<Object> updateUser(String uid, User user) {
-        studentMapper.updateById(user);
+    public CommonResult<Object> updateUser(String uid, UserDTO dto) {
+        User user = studentMapper.getStudentById(Integer.parseInt(uid));
+        user.update(dto);
+        studentMapper.update(user);
         return CommonResult.success();
     }
 

@@ -1,6 +1,10 @@
 package com.hwadee.IOTS_SCS.config;
 
+import com.hwadee.IOTS_SCS.filter.ActivityMonitorFilter;
+import com.hwadee.IOTS_SCS.filter.AdminCertificationFilter;
 import com.hwadee.IOTS_SCS.filter.JwtAuthenticationFilter;
+import com.hwadee.IOTS_SCS.mapper.AdminMapper;
+import com.hwadee.IOTS_SCS.mapper.LogMapper;
 import com.hwadee.IOTS_SCS.util.JwtUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +39,14 @@ public class SecurityConfig {
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Autowired
+    private LogMapper logMapper;
+
+    @Autowired
+    private AdminMapper adminMapper;
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, LogMapper logMapper) throws Exception {
         http
                 // 启用 CORS
                 .cors(cors -> {})
@@ -49,7 +59,9 @@ public class SecurityConfig {
                         .anyRequest().authenticated() // 其他请求需认证
                 )
                 // 注册过滤器
-                .addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new AdminCertificationFilter(jwtUtil, adminMapper), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new ActivityMonitorFilter(jwtUtil, logMapper), UsernamePasswordAuthenticationFilter.class);
 
 
         return http.build();

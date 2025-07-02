@@ -29,16 +29,16 @@ public class JwtUtil {
     @Value("${jwt.expiration}")
     private Long expiration;
 
-    public String generateToken(String account) {
+    public String generateToken(String uid) {
         return Jwts.builder()
-                .setSubject(account)
+                .setSubject(uid)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(SignatureAlgorithm.HS512, secret) // 旧版直接传 secret
                 .compact();
     }
 
-    public String getAccountFromToken(String token) {
+    public String getUidFromToken(String token) {
         if (token.startsWith("Bearer ")) {
             token = token.substring(7);
         }

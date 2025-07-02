@@ -1,9 +1,9 @@
-package com.hwadee.IOTS_SCS.entity.mapper;
+package com.hwadee.IOTS_SCS.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.hwadee.IOTS_SCS.entity.POJO.Course;
-import com.hwadee.IOTS_SCS.entity.DTO.CourseDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.response.CourseDTO;
 import com.hwadee.IOTS_SCS.entity.POJO.Lesson;
 
 /**

@@ -1,7 +1,7 @@
 package com.hwadee.IOTS_SCS.service.impl;
 
 
-import com.hwadee.IOTS_SCS.entity.DTO.FileDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.response.FileDTO;
 import com.hwadee.IOTS_SCS.service.FileService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
@@ -25,9 +25,10 @@ import java.util.UUID;
 @Service
 public class FileServiceImpl implements FileService {
 
-    private static final String STORAGE_PATH = "./data/upload";
-
     public FileDTO upload(MultipartFile file, String fileType, int entityId, HttpServletRequest request) {
+        String basePath = System.getProperty("user.dir") + "/res/file/";
+        System.out.println(basePath);
+
         if(file.isEmpty()) throw new IllegalArgumentException("上传文件不能为空");
 
         String originalFilename = file.getOriginalFilename();
@@ -35,7 +36,7 @@ public class FileServiceImpl implements FileService {
         String fileId = UUID.randomUUID().toString();
         String savedName = fileId + (extension != null ? "." + extension : "");
 
-        File dest = new File(STORAGE_PATH + "/" + savedName);
+        File dest = new File(basePath + savedName);
         dest.getParentFile().mkdirs();
 
         try {

@@ -1,3 +1,9 @@
+package com.hwadee.IOTS_SCS.entity.DTO.request;
+
+import lombok.Data;
+
+import java.util.List;
+
 /**
 * @ProjectName: IOTS-SCS-backend
 * @Title: AddUsersRequest
@@ -8,5 +14,8 @@
 * @version V1.0
 * Copyright (c) 2025, qiershi2006@h163.com All Rights Reserved.
 */
+@Data
 public class AddUsersRequest {
+    private List<String> usernames;
+    private String role;
 }

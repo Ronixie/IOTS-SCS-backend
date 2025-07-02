@@ -3,14 +3,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.hwadee.IOTS_SCS.entity.mapper.StudentMapper">
+<mapper namespace="com.hwadee.IOTS_SCS.mapper.StudentMapper">
     <!-- -->
     <select id="getStudentById" resultType="com.hwadee.IOTS_SCS.entity.POJO.User">
         select * from users WHERE uid=#{studentId} AND role='student'
     </select>
 
-    <select id="getStudentByName" resultType="com.hwadee.IOTS_SCS.entity.POJO.User">
-        select * from users WHERE account=#{studentName} AND role='student'
+    <select id="getStudentByAccount" resultType="com.hwadee.IOTS_SCS.entity.POJO.User">
+        select * from users WHERE account=#{account} AND role='student'
     </select>
 
+    <update id="update" parameterType="com.hwadee.IOTS_SCS.entity.POJO.User">
+        update users SET
+                         phone=#{phone} ,
+                         email=#{email} ,
+                         password=#{password} ,
+                         gender=#{gender} ,
+                         age=#{age} ,
+                         avatar_url=#{avatarUrl}
+                    WHERE
+                        uid=#{uid};
+    </update>
 </mapper>

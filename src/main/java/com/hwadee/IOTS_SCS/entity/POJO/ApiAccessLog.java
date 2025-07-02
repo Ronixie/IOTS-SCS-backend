@@ -3,6 +3,7 @@ package com.hwadee.IOTS_SCS.entity.POJO;
 import lombok.Data;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 /**
 * @ProjectName: IOTS-SCS-backend
@@ -15,12 +16,14 @@ import java.sql.Date;
 * Copyright (c) 2025, qiershi2006@h163.com All Rights Reserved.
 */
 @Data
-public class Log {
+public class ApiAccessLog {
     private Long logId;
     private Long userId;
-    private String operationType;
-    private String description;
-    private String detailsJson;
-    private Date time;
-    private String ipAddress;
+    private String ip;
+    private String uri;
+    private String query;
+    private Integer durationMs;
+    private Integer statusCode;
+    private String userAgent;
+    private LocalDateTime createdAt;
 }

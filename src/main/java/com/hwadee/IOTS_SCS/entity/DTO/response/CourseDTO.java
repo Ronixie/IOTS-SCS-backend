@@ -19,6 +19,4 @@ public class CourseDTO {
     private Long courseId;
     private String courseName;
     private String teacherName;
-    private int progress;
-    private Date lastStudyTime;
 }

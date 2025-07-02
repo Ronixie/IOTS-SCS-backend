@@ -9,4 +9,5 @@ import org.apache.ibatis.annotations.Param;
 public interface StudentMapper extends BaseMapper<User> {
     User getStudentById(@Param("studentId") int id);
     User getStudentByName(@Param("studentName") String name);
+    int update(User user);
 }

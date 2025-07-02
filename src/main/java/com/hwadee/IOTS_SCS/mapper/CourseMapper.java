@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.hwadee.IOTS_SCS.entity.POJO.Course;
 import com.hwadee.IOTS_SCS.entity.DTO.CourseDTO;
+import com.hwadee.IOTS_SCS.entity.POJO.Lesson;
 
 /**
 * @ProjectName: smart_study
@@ -16,7 +17,10 @@ import com.hwadee.IOTS_SCS.entity.DTO.CourseDTO;
 * Copyright (c) 2025, qiershi2006@h163.com All Rights Reserved.
 */
 public interface CourseMapper extends BaseMapper<Course> {
-    IPage<CourseDTO> getAllCoursesByStatus(IPage<CourseDTO> page, String status, String account);
-    IPage<CourseDTO> getAllCourses(IPage<CourseDTO> page, String account);
-    Course selectCourseInfo(String course_id);
+    IPage<CourseDTO> getAllCoursesByStatus(IPage<CourseDTO> page, String status, String uid);
+    IPage<CourseDTO> getAllCourses(IPage<CourseDTO> page, String uid);
+    Course getCourseInfo(String courseId);
+    IPage<Lesson> getCourseLessons(IPage<Lesson> page, String courseId);
+    Lesson getCourseLessonInfo(String lessonId);
+    int completeLesson(String lessonId, String uid);
 }

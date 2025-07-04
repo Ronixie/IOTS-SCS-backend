@@ -1,8 +1,11 @@
 package com.hwadee.IOTS_SCS.controller;
 
 import com.hwadee.IOTS_SCS.common.result.CommonResult;
+import com.hwadee.IOTS_SCS.entity.DTO.response.EvaluationReportDTO;
+import com.hwadee.IOTS_SCS.service.EvaluationService;
 import com.hwadee.IOTS_SCS.util.JwtUtil;
 import jakarta.websocket.server.PathParam;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,18 +23,21 @@ import java.util.Map;
 */
 @RestController
 @RequestMapping("/api/evaluation")
+@RequiredArgsConstructor()
 public class EvaluationController {
 
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Autowired
+    private EvaluationService evaluationService;
 
     @GetMapping("/report")
-    public CommonResult<Map<String, Object>> getReport(
+    public CommonResult<EvaluationReportDTO> getReport(
             @PathParam("period") String period,
             @RequestHeader("Authorization") String token) {
         String uidFromToken = jwtUtil.getUidFromToken(token);
-        return CommonResult.success();
+        return evaluationService.generateReport(period, uidFromToken);
     }
 
 }

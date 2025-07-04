@@ -43,11 +43,44 @@
         select * from lessons
                 WHERE lesson_id=#{lesson_id};
     </select>
+
     <update id="completeLesson" parameterType="String">
         update student_lesson SET
                                 is_completed='1'
                             WHERE
                                 lesson_id=#{leesonId} AND
                                 student_id=#{uid};
+    </update>
+
+    <insert id="courseSelect" parameterType="String">
+        INSERT INTO student_course (student_id, course_id, progress, last_updated_at)
+            VALUES(#{uid}, #{courseId}, 0, null);
+    </insert>
+
+    <insert id="addStudentLesson" parameterType="com.hwadee.IOTS_SCS.entity.POJO.Lesson">
+        INSERT INTO student_lesson (student_id, lesson_id, is_completed, view_seconds, last_accessed_at)
+            VALUES(#{uid}, #{lessonId}, 0, 0, null);
+    </insert>
+
+    <insert id="courseProgress">
+        INSERT INTO student_course_progress (student_id, course_id, total_lessons, completed_lessons, progress, created_at)
+            VALUES (#{uid}, #{courseId}, #{totalLessons}, 0, 0, #{createdAt});
+    </insert>
+
+    <update id="updateProgress" useGeneratedKeys="true" keyProperty="progress">
+        UPDATE student_course_progress SET
+                                        completed_lessons=completed_lessons + 1 ,
+                                        progress=(completed_lessons*100)/total_lessons
+                                    WHERE
+                                        student_id=#{uid} AND
+                                        course_id=#{courseId};
+    </update>
+
+    <update id="updateVideoProgress">
+        UPDATE student_lesson SET
+                                view_seconds=#{currentTime}
+                            WHERE
+                                student_id=#{uid} AND
+                                lesson_id=#{lessonId};
     </update>
 </mapper>

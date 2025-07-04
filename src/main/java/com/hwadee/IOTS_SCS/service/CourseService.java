@@ -6,12 +6,14 @@ import com.hwadee.IOTS_SCS.entity.POJO.Course;
 import com.hwadee.IOTS_SCS.entity.POJO.Lesson;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CourseService {
     CommonResult<List<CourseDTO>> getAllCourse(String status, String uid);
     CommonResult<Course> getCourseInfo(String courseId, String uid);
     CommonResult<List<Lesson>> getCourseLessons(String courseId);
     CommonResult<Lesson> getCourseLessonInfo(String lessonId);
-    CommonResult<String> updateLessonStatus(String lessonId, String uid);
-
+    CommonResult<Map<String, Integer>> updateLessonStatus(String lessonId, String courseId, String uid);
+    void videoProgress(String lessonId, String uid, int currentTime);
+    void addStudentCourse(String uid, String courseId);
 }

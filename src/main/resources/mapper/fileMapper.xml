@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hwadee.IOTS_SCS.mapper.FileMapper">
+    <insert id="insertFileInfo" parameterType="com.hwadee.IOTS_SCS.entity.POJO.FileInfo">
+        INSERT INTO files (file_url, file_name, file_size, file_usage, status, uploader_id, uploaded_at)
+        VALUES (#{fileUrl}, #{fileName}, #{fileSize}, #{fileUsage}, #{status}, #{uploaderId}, #{uploadedAt});
+    </insert>
+
+    <select id="isDownloadAllowed">
+        SELECT allow_download FROM lessons WHERE file_id=#{fileId};
+    </select>
+</mapper>

@@ -18,7 +18,8 @@ public class Lesson {
     private long courseId;
     private String lessonTitle;
     private String lessonType;
-    private int order;
-    private String contentUrl;
+    private String fileId;
     private String textContent;
+    private int order;
+    private String allowDownload;
 }

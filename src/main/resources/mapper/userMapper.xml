@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hwadee.IOTS_SCS.mapper.UserMapper">
+    <select id="getAccountUser" resultType="com.hwadee.IOTS_SCS.entity.POJO.User">
+        SELECT * FROM users WHERE account=#{account};
+    </select>
+
+    <select id="getUidUser" resultType="com.hwadee.IOTS_SCS.entity.POJO.User">
+        SELECT * FROM users WHERE uid=#{uid};
+    </select>
+
+    <update id="update" parameterType="com.hwadee.IOTS_SCS.entity.POJO.User">
+        UPDATE users SET phone=#{phone},
+                         email=#{email},
+                         password=#{password},
+                         gender=#{gender},
+                         age=#{age},
+                         avatar_url=#{avatarUrl}
+                    WHERE uid=#{uid};
+    </update>
+</mapper>

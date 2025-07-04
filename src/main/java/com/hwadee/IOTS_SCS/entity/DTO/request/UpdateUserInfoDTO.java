@@ -13,7 +13,7 @@ import lombok.Data;
 * Copyright (c) 2025, qiershi2006@h163.com All Rights Reserved.
 */
 @Data
-public class UserDTO {
+public class UpdateUserInfoDTO {
     private String phone;
     private String email;
     private String password;

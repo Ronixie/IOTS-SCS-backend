@@ -1,9 +1,11 @@
 package com.hwadee.IOTS_SCS.controller;
 
 import com.hwadee.IOTS_SCS.common.result.CommonResult;
+import com.hwadee.IOTS_SCS.entity.DTO.request.UploadFileDTO;
 import com.hwadee.IOTS_SCS.entity.DTO.response.FileDTO;
 import com.hwadee.IOTS_SCS.service.FileService;
 
+import com.hwadee.IOTS_SCS.util.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,26 +16,35 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 
 @Controller
-@RequestMapping("/api/file")
+@RequestMapping("/api/files")
 public class FileController {
 
     @Autowired
-    FileService fileService;
+    private FileService fileService;
 
-    @PostMapping("/upload")
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @PostMapping("")
     @ResponseBody
-    public CommonResult<FileDTO> upload(@RequestParam("file") MultipartFile file,
-                                        @RequestParam("file_type") String fileType,
-                                        @RequestParam("related_entity_id") Integer entityId,
+    public CommonResult<FileDTO> upload(@RequestBody UploadFileDTO uploadFileDTO,
                                         HttpServletRequest request) {
-        FileDTO info = fileService.upload(file,fileType,entityId,request);
-        return CommonResult.success(info);
+        return CommonResult.success(fileService.upload(uploadFileDTO, request));
     }
 
-    @GetMapping("/download/{file_id}")
-    public void download(@PathVariable("file_id") String fileId,
-                         HttpServletResponse response)
+    @GetMapping("")
+    public void download(
+            @RequestParam(value="file_id", required = true) String fileId,
+            @RequestHeader("Authorization") String token,
+            HttpServletResponse response)
             throws IOException {
+        // 权限判断
+        if (fileService.isDownloadAllowed(fileId)) {
+            response.sendError(403,"教师未开放下载权限");
+            return;
+        }
+
+        // 下载
         File file = findFileById(fileId);
         if(!file.exists()) {
             response.sendError(404, "文件不存在");

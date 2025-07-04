@@ -1,7 +1,11 @@
 package com.hwadee.IOTS_SCS.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.hwadee.IOTS_SCS.entity.DTO.response.LogDTO;
 import com.hwadee.IOTS_SCS.entity.POJO.ApiAccessLog;
+
+import java.time.LocalDateTime;
 
 /**
 * @ProjectName: IOTS-SCS-backend
@@ -15,4 +19,5 @@ import com.hwadee.IOTS_SCS.entity.POJO.ApiAccessLog;
 */
 public interface LogMapper extends BaseMapper<ApiAccessLog> {
     int insert(ApiAccessLog log);
+    IPage<LogDTO> getUidLogs(IPage<LogDTO> page, String uid, LocalDateTime start, LocalDateTime end);
 }

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
 * @ProjectName: smart_study
@@ -32,26 +33,14 @@ public class CourseController {
     @Autowired
     private JwtUtil jwtUtil;
 
-    /**
-     *
-     * @param status 课程状态(可选项)
-     * @param token 用于获取用户account
-     * @return MyBatis分页
-     */
     @GetMapping()
     public CommonResult<List<CourseDTO>> getAllCourses(
-            @RequestParam(value="status",required = false,defaultValue = "all") String status,
+            @RequestParam(value = "status", required = false, defaultValue = "all") String status,
             @RequestHeader("Authorization") String token) {
         String uidFromToken = jwtUtil.getUidFromToken(token);
         return courseService.getAllCourse(status, uidFromToken);
     }
 
-
-    /**
-     *
-     * @param courseId 需要详细信息的课程id
-     * @return 课程详细信息
-     */
     @GetMapping("/{course_id}")
     public CommonResult<Course> getCourseInfo(
             @PathVariable("course_id") String courseId,
@@ -60,39 +49,34 @@ public class CourseController {
         return courseService.getCourseInfo(courseId, uidFromToken);
     }
 
-    /**
-     *
-     * @param courseId 课程id
-     * @return
-     */
     @GetMapping("/{course_id}/lessons")
     public CommonResult<List<Lesson>> getCourseLessons(
             @PathVariable("course_id") String courseId) {
         return courseService.getCourseLessons(courseId);
     }
 
-    /**
-     *
-     * @param lessonId 需要详细信息的课程id
-     * @return 课时详细信息
-     */
     @GetMapping("/{course_id}/lessons/{lesson_id}")
     public CommonResult<Lesson> getCourseLessonInfo(
             @PathVariable("lesson_id") String lessonId) {
         return courseService.getCourseLessonInfo(lessonId);
     }
 
-    /**
-     *
-     * @param lessonId 标记的课时
-     * @param token 用于获取用户信息
-     * @return
-     */
-    @PostMapping("/{course_id}/lessons/{lesson_id}/status")
-    public CommonResult<String> updateLessonStatus(
+    @PostMapping("/{course_id}/lessons/{lesson_id}")
+    public CommonResult<?> videoProgress(
             @PathVariable("lesson_id") String lessonId,
+            int currentTime,
             @RequestHeader("Authorization") String token) {
         String uidFromToken = jwtUtil.getUidFromToken(token);
-        return courseService.updateLessonStatus(lessonId, uidFromToken);
+        courseService.videoProgress(lessonId,uidFromToken,currentTime);
+        return CommonResult.success();
+    }
+
+    @PostMapping("/{course_id}/lessons/{lesson_id}/status")
+    public CommonResult<Map<String, Integer>> updateLessonStatus(
+            @PathVariable("lesson_id") String lessonId,
+            @PathVariable("course_id") String courseId,
+            @RequestHeader("Authorization") String token) {
+        String uidFromToken = jwtUtil.getUidFromToken(token);
+        return courseService.updateLessonStatus(lessonId, courseId, uidFromToken);
     }
 }

@@ -1,11 +1,13 @@
 package com.hwadee.IOTS_SCS.service.impl;
 
 import com.hwadee.IOTS_SCS.common.result.CommonResult;
-import com.hwadee.IOTS_SCS.entity.DTO.request.UserDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.request.UpdateUserInfoDTO;
 import com.hwadee.IOTS_SCS.entity.POJO.ApiAccessLog;
 import com.hwadee.IOTS_SCS.entity.POJO.User;
 import com.hwadee.IOTS_SCS.mapper.AdminMapper;
 import com.hwadee.IOTS_SCS.mapper.LogMapper;
+import com.hwadee.IOTS_SCS.mapper.UserMapper;
+import com.hwadee.IOTS_SCS.service.LogService;
 import com.hwadee.IOTS_SCS.service.UserService;
 import com.hwadee.IOTS_SCS.mapper.StudentMapper;
 import com.hwadee.IOTS_SCS.util.JwtUtil;
@@ -32,47 +34,34 @@ import java.util.HashMap;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    StudentMapper studentMapper;
+    private UserMapper userMapper;
 
     @Autowired
-    AdminMapper adminMapper;
+    private JwtUtil jwtUtil;
 
     @Autowired
-    LogMapper logMapper;
-
-    @Autowired
-    JwtUtil jwtUtil;
+    private LogService logService;
 
     /**
      *
      * @param value 登录的用户名或学号
      * @param key 密码
-     * @param identity 登录者身份
+     * @param role 登录者身份
      * @return 登录信息
      */
     @Override
-    public CommonResult<Object> login(String value, String key, int identity) {
+    public CommonResult<Object> login(String value, String key, int role) {
         HashMap<String, Object> result = new HashMap<>();
-
-        System.out.println("\nvalue=[" + value + "]\nkey=[" + key + "]\nidentity=[" + identity + "]\n");
-
         User user = new User();
-        switch (identity) {
-            case 0:
-                user = adminMapper.getUserByAccount(value.trim());
-                break;
-            case 1:
-                user = studentMapper.getStudentByAccount(value.trim());
-                break;
-            case 2:
-                break;
-            default:
-                return CommonResult.error(404,"身份不存在");
-        }
-        if (user.getRole().isEmpty()) {
-            return CommonResult.error(404,"用户不存在");
+
+        // 查询数据库
+        try {
+            user = userMapper.getAccountUser(value);
+        } catch (Exception e) {
+            return CommonResult.error(404, "用户不存在");
         }
 
+        // 验证登录信息
         if (key.equals(user.getPassword())) {
             result.put("tokens", jwtUtil.generateToken(String.valueOf(user.getUid())));
 
@@ -88,12 +77,12 @@ public class UserServiceImpl implements UserService {
             log.setUserId(user.getUid());
             log.setUri("/api/auth/login");
             log.setCreatedAt(LocalDateTime.now());
-            logMapper.insert(log);
+            logService.log(log);
 
             return CommonResult.success(result);
         }
         else {
-            return CommonResult.success("密码错误");
+            return CommonResult.error(403,"密码错误");
         }
     }
 
@@ -104,7 +93,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public CommonResult<Object> getUserInfo(String uid) {
-        return CommonResult.success(studentMapper.getStudentById(Integer.parseInt(uid)));
+        return CommonResult.success(userMapper.getUidUser(uid));
     }
 
     /**
@@ -114,10 +103,10 @@ public class UserServiceImpl implements UserService {
      * @return 更新完成信息
      */
     @Override
-    public CommonResult<Object> updateUser(String uid, UserDTO dto) {
-        User user = studentMapper.getStudentById(Integer.parseInt(uid));
-        user.update(dto);
-        studentMapper.update(user);
+    public CommonResult<Object> updateUser(String uid, UpdateUserInfoDTO dto) {
+        User user = userMapper.getUidUser(uid);
+        update(user, dto);
+        userMapper.update(user);
         return CommonResult.success();
     }
 
@@ -131,4 +120,12 @@ public class UserServiceImpl implements UserService {
         return CommonResult.success();
     }
 
+    private void update(User user, UpdateUserInfoDTO dto) {
+        if (dto.getPassword() != null) user.setPassword(dto.getPassword());
+        if (dto.getPhone() != null) user.setPhone(dto.getPhone());
+        if (dto.getEmail() != null) user.setEmail(dto.getEmail());
+        if (dto.getGender() != null) user.setGender(dto.getGender());
+        if (dto.getAge() != null) user.setAge(dto.getAge());
+        if (dto.getAvatarUrl() != null) user.setAvatarUrl(dto.getAvatarUrl());
+    }
 }

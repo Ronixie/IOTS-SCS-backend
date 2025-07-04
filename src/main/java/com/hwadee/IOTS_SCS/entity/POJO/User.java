@@ -1,6 +1,6 @@
 package com.hwadee.IOTS_SCS.entity.POJO;
 
-import com.hwadee.IOTS_SCS.entity.DTO.request.UserDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.request.UpdateUserInfoDTO;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -22,17 +22,5 @@ public class User implements Serializable {
     protected String college;
     protected String major;
     protected String avatarUrl;
-
-    public User() {
-    }
-
-    public void update(UserDTO dto) {
-        if (dto.getPassword() != null) this.password = dto.getPassword();
-        if (dto.getPhone() != null) this.phone = dto.getPhone();
-        if (dto.getEmail() != null) this.email = dto.getEmail();
-        if (dto.getGender() != null) this.gender = dto.getGender();
-        if (dto.getAge() != null) this.age = dto.getAge();
-        if (dto.getAvatarUrl() != null) this.avatarUrl = dto.getAvatarUrl();
-    }
 
 }

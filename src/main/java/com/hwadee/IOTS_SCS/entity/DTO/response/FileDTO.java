@@ -22,7 +22,9 @@ public class FileDTO {
     private String fileName;
     private long fileSize;
     private String fileUsage;
+    private String status;
     private String uploaderId;
+    private String uploadedAt;
 
     public FileDTO(String fileId, String fileUrl, String fileName, long fileSize) {
         this.fileId = fileId;

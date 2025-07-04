@@ -12,7 +12,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
 * @ProjectName: smart_study
@@ -30,6 +33,12 @@ public class CourseServiceImpl implements CourseService {
     @Autowired
     private CourseMapper courseMapper;
 
+    /**
+     *
+     * @param status 所查看的课程状态
+     * @param uid 用户id
+     * @return 分页课程信息
+     */
     @Override
     public CommonResult<List<CourseDTO>> getAllCourse(String status, String uid) {
         IPage<CourseDTO> allCourses = new Page<>();
@@ -41,6 +50,12 @@ public class CourseServiceImpl implements CourseService {
         return CommonResult.successPageData(allCourses);
     }
 
+    /**
+     *
+     * @param course_id 课程id
+     * @param uid 用户id
+     * @return 课程的详细信息
+     */
     @Override
     public CommonResult<Course> getCourseInfo(String course_id, String uid) {
 
@@ -51,21 +66,64 @@ public class CourseServiceImpl implements CourseService {
         return CommonResult.success(course);
     }
 
+    /**
+     *
+     * @param courseId 课程id
+     * @return 该课程的全部课时
+     */
     @Override
     public CommonResult<List<Lesson>> getCourseLessons(String courseId) {
         IPage<Lesson> courseLessons = new Page<>();
         return CommonResult.successPageData(courseMapper.getCourseLessons(courseLessons, courseId));
     }
 
+    /**
+     *
+     * @param lessonId 课时id
+     * @return 课时的详细信息
+     */
     @Override
     public CommonResult<Lesson> getCourseLessonInfo(String lessonId) {
         return CommonResult.success(courseMapper.getCourseLessonInfo(lessonId));
     }
 
     @Override
-    public CommonResult<String> updateLessonStatus(String lessonId, String uid) {
-        if (courseMapper.completeLesson(lessonId, uid) > 0) return CommonResult.success();
-        else return CommonResult.error(404,"修改失败");
+    public void videoProgress(String lessonId, String uid, int currentTime) {
+        courseMapper.updateVideoProgress(lessonId,uid,currentTime);
     }
 
+
+    /**
+     *
+     * @param lessonId 课时id
+     * @param uid 用户id
+     * @return 标记课时完成
+     */
+    @Override
+    public CommonResult<Map<String,Integer>> updateLessonStatus(String lessonId, String courseId, String uid) {
+        courseMapper.completeLesson(lessonId, uid);
+        int progress = courseMapper.updateProgress(uid, courseId);
+        Map<String, Integer> progressMap = new HashMap<>();
+        progressMap.put("progress", progress);
+        return CommonResult.success(progressMap);
+    }
+
+    /**
+     * 暂不使用
+     * @param uid 用户id
+     * @param courseId 课程id
+     */
+    @Override
+    public void addStudentCourse(String uid, String courseId) {
+        courseMapper.courseSelect(uid, courseId);
+
+        IPage<Lesson> lessons = new Page<>();
+        courseMapper.getCourseLessons(lessons , courseId);
+        for(Lesson lesson : lessons.getRecords()){
+            courseMapper.addStudentLesson(uid, lesson);
+        }
+
+        courseMapper.courseProgress(uid, courseId, lessons.getTotal(), LocalDateTime.now());
+
+    }
 }

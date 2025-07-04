@@ -6,6 +6,8 @@ import com.hwadee.IOTS_SCS.entity.POJO.Course;
 import com.hwadee.IOTS_SCS.entity.DTO.response.CourseDTO;
 import com.hwadee.IOTS_SCS.entity.POJO.Lesson;
 
+import java.time.LocalDateTime;
+
 /**
 * @ProjectName: smart_study
 * @Title: CourseMapper
@@ -23,4 +25,9 @@ public interface CourseMapper extends BaseMapper<Course> {
     IPage<Lesson> getCourseLessons(IPage<Lesson> page, String courseId);
     Lesson getCourseLessonInfo(String lessonId);
     int completeLesson(String lessonId, String uid);
+    int courseSelect(String uid, String courseId);
+    int addStudentLesson(String uid, Lesson lesson);
+    int courseProgress(String uid, String courseId, Long totalLessons, LocalDateTime createAt);
+    int updateProgress(String uid , String courseId);
+    int updateVideoProgress(String lessonId, String uid, int currentTime);
 }

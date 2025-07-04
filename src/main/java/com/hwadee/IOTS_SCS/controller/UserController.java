@@ -1,12 +1,12 @@
 package com.hwadee.IOTS_SCS.controller;
 
 import com.hwadee.IOTS_SCS.common.result.CommonResult;
-import com.hwadee.IOTS_SCS.entity.DTO.request.UserDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.request.LoginDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.request.UpdateUserInfoDTO;
 import com.hwadee.IOTS_SCS.service.UserService;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -28,45 +28,28 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    /**
-     *
-     * @param account 登录的用户名或学号
-     * @param password 密码
-     * @param role 登录者身份
-     * @return 登录信息
-     */
     @PostMapping("/auth/login")
-    public CommonResult<Object> login(@RequestParam("username") String account, String password, String role) {
-        return userService.login(account, password, Integer.parseInt(role));
+    public CommonResult<Object> login(@RequestBody LoginDTO dto) {
+        String way = dto.getWay();
+        String account = dto.getUsername();
+        String password = dto.getPassword();
+        int role = Integer.parseInt(dto.getRole());
+
+        return userService.login(account, password, role);
     }
 
-    /**
-     *
-     * @param uid 用户id
-     * @return 用户详细信息
-     */
     @GetMapping("/users/{uid}")
     public CommonResult<Object> getUser(@PathVariable("uid") String uid) {
         return userService.getUserInfo(uid);
     }
 
-    /**
-     *
-     * @param uid 用户id
-     * @param user 用户更新信息
-     * @return
-     */
-    @PutMapping(value = "/users/{uid}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(value = "/users/{uid}")
     public CommonResult<Object> updateUser(
             @PathVariable("uid") String uid,
-            @ModelAttribute UserDTO user) {
+            @RequestBody UpdateUserInfoDTO user) {
         return userService.updateUser(uid, user);
     }
 
-    /**
-     *
-     * @return 登出, 删除服务器保留的信息
-     */
     @PostMapping("/auth/logout")
     public CommonResult<Object> logout() {
         return userService.logout();

@@ -13,7 +13,7 @@
     </select>
 
     <insert id="insertUser" useGeneratedKeys="true" keyProperty="uid" parameterType="com.hwadee.IOTS_SCS.entity.POJO.User">
-        INSERT INTO users (account, password, name, identity, role) VALUES(#{account},#{password},#{name},#{identity},#{role});
+        INSERT INTO users (account, password, name, phone, identity, role) VALUES(#{account},#{password},#{name}, #{phone},#{identity},#{role});
     </insert>
 
     <update id="resetPassword" parameterType="String">

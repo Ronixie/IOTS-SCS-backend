@@ -1,14 +1,19 @@
 package com.hwadee.IOTS_SCS.service.impl;
 
+import com.alibaba.dashscope.exception.InputRequiredException;
+import com.alibaba.dashscope.exception.NoApiKeyException;
 import com.hwadee.IOTS_SCS.common.result.CommonResult;
 import com.hwadee.IOTS_SCS.entity.DTO.response.CourseDTO;
 import com.hwadee.IOTS_SCS.entity.POJO.Course;
+import com.hwadee.IOTS_SCS.entity.POJO.Enrollment;
 import com.hwadee.IOTS_SCS.entity.POJO.Lesson;
+import com.hwadee.IOTS_SCS.entity.POJO.Progress;
 import com.hwadee.IOTS_SCS.mapper.CourseMapper;
 import com.hwadee.IOTS_SCS.service.CourseService;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hwadee.IOTS_SCS.util.AIUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -92,7 +97,6 @@ public class CourseServiceImpl implements CourseService {
         courseMapper.updateVideoProgress(lessonId,uid,currentTime);
     }
 
-
     /**
      *
      * @param lessonId 课时id
@@ -106,6 +110,19 @@ public class CourseServiceImpl implements CourseService {
         Map<String, Integer> progressMap = new HashMap<>();
         progressMap.put("progress", progress);
         return CommonResult.success(progressMap);
+    }
+
+    @Override
+    public CommonResult<String> generateSuggestion(String uid) throws NoApiKeyException, InputRequiredException {
+
+        LocalDateTime time = LocalDateTime.now().minusMonths(3);
+        // 查数据库，获得数据
+        List<Enrollment> enrollment = courseMapper.selectEnrollment(new Page<>(), uid, time).getRecords();
+        List<Progress> progress = courseMapper.selectProgress(new Page<>(), uid, time).getRecords();
+
+        String suggestion = AIUtil.callWithMessage(enrollment.toString() + progress.toString());
+
+        return CommonResult.success(suggestion);
     }
 
     /**
@@ -124,6 +141,6 @@ public class CourseServiceImpl implements CourseService {
         }
 
         courseMapper.courseProgress(uid, courseId, lessons.getTotal(), LocalDateTime.now());
-
     }
+
 }

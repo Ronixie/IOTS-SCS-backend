@@ -40,7 +40,6 @@ public class EvaluationServiceImpl implements EvaluationService {
         EvaluationReportDTO dto = new EvaluationReportDTO();
 
         LocalDateTime time = null;
-
         switch (period) {
             case "weekly":
                 time = LocalDateTime.now().minusWeeks(1);
@@ -56,16 +55,10 @@ public class EvaluationServiceImpl implements EvaluationService {
         }
 
         // 查数据库，获得数据
-        IPage<Enrollment> enrollment = new Page<>();
-        IPage<Progress> progress = new Page<>();
-
-        evaluationMapper.selectEnrollment(enrollment, uid, time);
-        evaluationMapper.selectProgress(progress, uid, time);
+        List<Enrollment> enrollments = evaluationMapper.selectEnrollment(new Page<>(), uid, time).getRecords();
+        List<Progress> progresses = evaluationMapper.selectProgress(new Page<>(), uid, time).getRecords();
 
         // ------------------------- 分析数据 -------------------------
-        List<Enrollment> enrollments = enrollment.getRecords();   // 选课记录
-        List<Progress>   progresses  = progress.getRecords();     // 进度记录
-
         // 1. 课程维度统计
         int totalCourses      = enrollments.size();
         int completedCourses  = (int) enrollments.stream()
@@ -75,7 +68,7 @@ public class EvaluationServiceImpl implements EvaluationService {
                 .filter(e -> "in_progress".equalsIgnoreCase(e.getStatus()))
                 .count();
 
-        // 2. 小节 / 进度维度统计
+        // 2. 课时维度统计
         int totalLessons      = progresses.stream()
                 .mapToInt(Progress::getTotalLessons)
                 .sum();
@@ -89,7 +82,7 @@ public class EvaluationServiceImpl implements EvaluationService {
                 .average()
                 .orElse(0.0);
 
-        // 3. 将数据填充进 DTO
+        // 3. 数据填充 DTO
         dto.setTotalCourses(totalCourses);
         dto.setCompletedCourses(completedCourses);
         dto.setInProgressCourses(inProgressCourses);
@@ -97,7 +90,7 @@ public class EvaluationServiceImpl implements EvaluationService {
         dto.setTotalLessons(totalLessons);
         dto.setCompletedLessons(completedLessons);
         dto.setAverageProgress(
-                Math.round(averageProgress * 10.0) / 10.0   // 保留 1 位小数，可选
+                Math.round(averageProgress * 10.0) / 10.0   // 保留 1 位小数
         );
 
         dto.setPeriodFrom(time);               // 统计起点

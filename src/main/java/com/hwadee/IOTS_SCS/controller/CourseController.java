@@ -1,5 +1,7 @@
 package com.hwadee.IOTS_SCS.controller;
 
+import com.alibaba.dashscope.exception.InputRequiredException;
+import com.alibaba.dashscope.exception.NoApiKeyException;
 import com.hwadee.IOTS_SCS.common.result.CommonResult;
 import com.hwadee.IOTS_SCS.entity.DTO.response.CourseDTO;
 import com.hwadee.IOTS_SCS.entity.POJO.Course;
@@ -78,5 +80,12 @@ public class CourseController {
             @RequestHeader("Authorization") String token) {
         String uidFromToken = jwtUtil.getUidFromToken(token);
         return courseService.updateLessonStatus(lessonId, courseId, uidFromToken);
+    }
+
+    @GetMapping("/suggestion")
+    public CommonResult<?> generateSuggestion(
+            @RequestHeader("Authorization") String token) throws NoApiKeyException, InputRequiredException {
+        String uidFromToken = jwtUtil.getUidFromToken(token);
+        return courseService.generateSuggestion(uidFromToken);
     }
 }

@@ -83,4 +83,19 @@
                                 student_id=#{uid} AND
                                 lesson_id=#{lessonId};
     </update>
+
+
+    <select id="selectEnrollment" resultType="com.hwadee.IOTS_SCS.entity.POJO.Enrollment">
+        SELECT * FROM student_course
+        WHERE
+            student_id=#{uid} AND
+            DATE(`date`) >= #{fromTime};
+    </select>
+
+    <select id="selectProgress" resultType="com.hwadee.IOTS_SCS.entity.POJO.Progress">
+        SELECT * FROM student_course_progress
+        WHERE
+            student_id=#{uid} AND
+            DATE(`date`) >= #{fromTime};
+    </select>
 </mapper>

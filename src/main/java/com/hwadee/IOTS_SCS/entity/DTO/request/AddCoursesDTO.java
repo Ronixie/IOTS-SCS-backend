@@ -18,6 +18,7 @@ import java.util.List;
 */
 @Data
 public class AddCoursesDTO {
+
     private String courseNames;
     private Long teacherId;
     private int credit;

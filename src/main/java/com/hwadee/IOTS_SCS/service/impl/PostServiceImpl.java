@@ -133,7 +133,7 @@ public class PostServiceImpl implements PostService {
     public ReplyDTO createReply(CreateReplyReq request) {
         //创建回复
         Reply reply = new Reply();
-        reply.setOfPostId(request.getOfPostId());
+        reply.setOfPostId(request.getPostId());
         reply.setUserId(request.getUserId());
         reply.setContent(request.getContent());
         reply.setCreateTime(new Date());

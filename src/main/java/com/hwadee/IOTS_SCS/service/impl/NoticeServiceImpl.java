@@ -24,8 +24,8 @@ public class NoticeServiceImpl implements NoticeService {
     @Autowired
     private NoticeMapper noticeMapper;
 
-    @Autowired
-    private EmailService emailService;
+//    @Autowired
+//    private EmailService emailService;
 
     @Autowired
     private UserMapper userMapper;
@@ -111,21 +111,21 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public void sendNoticeToMail(Long noticeId){
-        Notice notice = noticeMapper.getNoticeById(noticeId);
-
-        User sender = userMapper.getUidUser(String.valueOf(notice.getUserId()));
-
-        for(Long receiverId : notice.getReceiverIds()){
-            User receiver = userMapper.getUidUser(String.valueOf(receiverId));
-            if(receiver.getEmail() != null && !receiver.getEmail().isEmpty()){
-                //邮件内容
-                String content = String.format(
-                        "example %s",
-                        "example111"
-                );
-
-                emailService.sendSimpleMessage(receiver.getEmail(), "example subject", content);
-            }
-        }
+//        Notice notice = noticeMapper.getNoticeById(noticeId);
+//
+//        User sender = userMapper.getUidUser(String.valueOf(notice.getUserId()));
+//
+//        for(Long receiverId : notice.getReceiverIds()){
+//            User receiver = userMapper.getUidUser(String.valueOf(receiverId));
+//            if(receiver.getEmail() != null && !receiver.getEmail().isEmpty()){
+//                //邮件内容
+//                String content = String.format(
+//                        "example %s",
+//                        "example111"
+//                );
+//
+//                emailService.sendSimpleMessage(receiver.getEmail(), "example subject", content);
+//            }
+//        }
     }
 }

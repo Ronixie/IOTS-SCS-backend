@@ -2,8 +2,10 @@ package com.hwadee.IOTS_SCS.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.hwadee.IOTS_SCS.entity.DTO.response.CourseInfoDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.response.ProgressDTO;
 import com.hwadee.IOTS_SCS.entity.POJO.Course;
-import com.hwadee.IOTS_SCS.entity.DTO.response.CourseDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.response.CourseSimpleDTO;
 import com.hwadee.IOTS_SCS.entity.POJO.Enrollment;
 import com.hwadee.IOTS_SCS.entity.POJO.Lesson;
 import com.hwadee.IOTS_SCS.entity.POJO.Progress;
@@ -11,9 +13,9 @@ import com.hwadee.IOTS_SCS.entity.POJO.Progress;
 import java.time.LocalDateTime;
 
 public interface CourseMapper extends BaseMapper<Course> {
-    IPage<CourseDTO> getAllCoursesByStatus(IPage<CourseDTO> page, String status, String uid);
-    IPage<CourseDTO> getAllCourses(IPage<CourseDTO> page, String uid);
-    Course getCourseInfo(String courseId);
+    IPage<CourseSimpleDTO> getAllCoursesByStatus(IPage<CourseSimpleDTO> page, String status, String uid);
+    IPage<CourseSimpleDTO> getAllCourses(IPage<CourseSimpleDTO> page, String uid);
+    CourseInfoDTO getCourseInfo(String courseId, String uid);
     IPage<Lesson> getCourseLessons(IPage<Lesson> page, String courseId);
     Lesson getCourseLessonInfo(String lessonId);
     int completeLesson(String lessonId, String uid);
@@ -24,5 +26,8 @@ public interface CourseMapper extends BaseMapper<Course> {
     int updateVideoProgress(String lessonId, String uid, int currentTime);
     IPage<Enrollment> selectEnrollment(IPage<Enrollment> page, String uid, LocalDateTime fromTime);
     IPage<Progress> selectProgress(IPage<Progress> page, String uid, LocalDateTime fromTime);
+    IPage<ProgressDTO> getCourseProgress(IPage<ProgressDTO> page, String uid, String courseId);
+
+    String getCourseName(String courseId);
 
 }

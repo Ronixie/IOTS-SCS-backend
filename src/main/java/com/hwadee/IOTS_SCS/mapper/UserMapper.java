@@ -7,4 +7,9 @@ public interface UserMapper extends BaseMapper<User> {
     User getAccountUser(String account);
     User getUidUser(String uid);
     int update(User user);
+    String getPassword(String uid);
+    int updatePassword(String password, String uid);
+
+    String getUserName(String uid);
+    String getUserAvatar(String uid);
 }

@@ -8,16 +8,36 @@
     </select>
 
     <select id="getUidUser" resultType="com.hwadee.IOTS_SCS.entity.POJO.User">
-        SELECT * FROM users WHERE uid=#{uid};
+        SELECT uid, account, email, phone, name, role, `identity`, college, major, age, gender, avatar_url FROM users WHERE uid=#{uid};
     </select>
 
     <update id="update" parameterType="com.hwadee.IOTS_SCS.entity.POJO.User">
-        UPDATE users SET phone=#{phone},
-                         email=#{email},
-                         password=#{password},
-                         gender=#{gender},
-                         age=#{age},
-                         avatar_url=#{avatarUrl}
+        UPDATE users SET
+                        name=#{name},
+                        phone=#{phone},
+                        email=#{email},
+                        gender=#{gender},
+                        age=#{age},
+                        avatar_url=#{avatarUrl}
                     WHERE uid=#{uid};
     </update>
+
+    <select id="getPassword" resultType="String">
+        SELECT password FROM users WHERE uid=#{uid};
+    </select>
+
+    <update id="updatePassword">
+        UPDATE users SET
+                        password=#{password}
+                    WHERE
+                        uid=#{uid};
+    </update>
+
+    <select id="getUserName" resultType="String">
+        SELECT name FROM users WHERE uid=#{uid};
+    </select>
+
+    <select id="getUserAvatar" resultType="String">
+        SELECT avatar_url FROM users WHERE uid=#{uid};
+    </select>
 </mapper>

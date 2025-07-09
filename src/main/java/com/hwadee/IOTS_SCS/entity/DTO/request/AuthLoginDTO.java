@@ -13,7 +13,7 @@ import lombok.Data;
 * Copyright (c) 2025, qiershi2006@h163.com All Rights Reserved.
 */
 @Data
-public class LoginDTO {
+public class AuthLoginDTO {
     private String way;
     /**
      * 0 - Admin, 1 - Student, 2 - Teacher

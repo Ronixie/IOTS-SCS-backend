@@ -39,6 +39,7 @@ public class ActivityMonitorFilter extends OncePerRequestFilter {
         long start = System.currentTimeMillis();
 
         String uri = request.getRequestURI();
+        String method = request.getMethod();
         String query = request.getQueryString();
         String ip = request.getRemoteAddr();
         String userAgent = request.getHeader("User-Agent");
@@ -62,6 +63,7 @@ public class ActivityMonitorFilter extends OncePerRequestFilter {
             log.setUserId(Long.parseLong(uid));
             log.setIp(ip);
             log.setUri(uri);
+            log.setMethod(method);
             log.setQuery(query);
             log.setDurationMs((int)duration);
             log.setStatusCode(status);

@@ -1,6 +1,5 @@
 package com.hwadee.IOTS_SCS.entity.POJO;
 
-import com.hwadee.IOTS_SCS.entity.DTO.request.UpdateUserInfoDTO;
 import lombok.Data;
 
 import java.io.Serializable;

@@ -2,7 +2,7 @@ package com.hwadee.IOTS_SCS.controller;
 
 import com.hwadee.IOTS_SCS.common.result.CommonResult;
 import com.hwadee.IOTS_SCS.entity.DTO.request.UploadFileDTO;
-import com.hwadee.IOTS_SCS.entity.DTO.response.FileDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.response.FileInfoDTO;
 import com.hwadee.IOTS_SCS.service.FileService;
 
 import com.hwadee.IOTS_SCS.util.JwtUtil;
@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 
@@ -25,14 +24,14 @@ public class FileController {
     @Autowired
     private JwtUtil jwtUtil;
 
-    @PostMapping("")
+    @PostMapping
     @ResponseBody
-    public CommonResult<FileDTO> upload(@RequestBody UploadFileDTO uploadFileDTO,
-                                        HttpServletRequest request) {
+    public CommonResult<FileInfoDTO> upload(@RequestBody UploadFileDTO uploadFileDTO,
+                                            HttpServletRequest request) {
         return CommonResult.success(fileService.upload(uploadFileDTO, request));
     }
 
-    @GetMapping("")
+    @GetMapping
     public void download(
             @RequestParam(value="file_id", required = true) String fileId,
             @RequestHeader("Authorization") String token,

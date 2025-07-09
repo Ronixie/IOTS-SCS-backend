@@ -16,6 +16,22 @@ spring:
       timeout: 5000
       database: 10
 
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+
+  mail:
+    host: smtp.example.com
+    port: 587
+    username: your@email.com
+    password: yourpassword
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+
 mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.hwadee.IOTS_SCS.entity.POJO

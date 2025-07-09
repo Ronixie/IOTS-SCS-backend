@@ -5,8 +5,8 @@
 
 <mapper namespace="com.hwadee.IOTS_SCS.mapper.LogMapper">
     <insert id="insert" parameterType="com.hwadee.IOTS_SCS.entity.POJO.ApiAccessLog">
-        INSERT INTO activity_logs (user_id, ip, uri, query, duration_ms, status_code, user_agent, created_at)
-        VALUES(#{userId}, #{ip}, #{uri}, #{query}, #{durationMs}, #{statusCode}, #{userAgent}, #{createdAt});
+        INSERT INTO activity_logs (user_id, ip, uri, method, query, duration_ms, status_code, user_agent, created_at)
+        VALUES(#{userId}, #{ip}, #{uri}, #{method}, #{query}, #{durationMs}, #{statusCode}, #{userAgent}, #{createdAt});
     </insert>
 
     <select id="getUidLogs" resultType="com.hwadee.IOTS_SCS.entity.DTO.response.LogDTO">

@@ -1,8 +1,9 @@
 package com.hwadee.IOTS_SCS.controller;
 
 import com.hwadee.IOTS_SCS.common.result.CommonResult;
-import com.hwadee.IOTS_SCS.entity.DTO.request.LoginDTO;
-import com.hwadee.IOTS_SCS.entity.DTO.request.UpdateUserInfoDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.request.AuthLoginDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.request.UserChangePasswordDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.request.UserUpdateDTO;
 import com.hwadee.IOTS_SCS.service.UserService;
 
 
@@ -28,8 +29,10 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+
+    // 用户登录
     @PostMapping("/auth/login")
-    public CommonResult<Object> login(@RequestBody LoginDTO dto) {
+    public CommonResult<Object> login(@RequestBody AuthLoginDTO dto) {
         String way = dto.getWay();
         String account = dto.getUsername();
         String password = dto.getPassword();
@@ -38,18 +41,47 @@ public class UserController {
         return userService.login(account, password, role);
     }
 
+    // 获取用户详细信息
     @GetMapping("/users/{uid}")
     public CommonResult<Object> getUser(@PathVariable("uid") String uid) {
         return userService.getUserInfo(uid);
     }
 
+    // 修改用户信息
     @PutMapping(value = "/users/{uid}")
     public CommonResult<Object> updateUser(
             @PathVariable("uid") String uid,
-            @RequestBody UpdateUserInfoDTO user) {
+            @RequestBody UserUpdateDTO user) {
         return userService.updateUser(uid, user);
     }
 
+    // 修改用户密码
+    @PutMapping(value = "/auth/{uid}")
+    public CommonResult<Object> updatePassword(
+            @PathVariable("uid") String uid,
+            @RequestBody UserChangePasswordDTO dto) {
+        String oldPassword = dto.getOldPassword();
+        String newPassword = dto.getNewPassword();
+        return userService.updatePassword(uid, oldPassword, newPassword);
+    }
+
+//    // 发送用户头像
+//    @GetMapping("/users/{uid}/avatar")
+//    public void getAvatar(
+//            @PathVariable("uid") String uid,
+//            HttpServletResponse response)
+//            throws IOException {
+//        File avatarFile = new File();
+//
+//        if(!avatarFile.exists()) avatarFile = new File("defaultAvatar.png");
+//
+//        response.setContentType("image/png");
+//        response.setHeader("Cache-Control", "no-cache");
+//        Files.copy(avatarFile.toPath(), response.getOutputStream());
+//        response.flushBuffer();
+//    }
+
+    // 用户登出
     @PostMapping("/auth/logout")
     public CommonResult<Object> logout() {
         return userService.logout();

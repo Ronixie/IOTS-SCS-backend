@@ -3,7 +3,9 @@ package com.hwadee.IOTS_SCS.controller;
 import com.alibaba.dashscope.exception.InputRequiredException;
 import com.alibaba.dashscope.exception.NoApiKeyException;
 import com.hwadee.IOTS_SCS.common.result.CommonResult;
-import com.hwadee.IOTS_SCS.entity.DTO.response.CourseDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.response.CourseInfoDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.response.CourseSimpleDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.response.ProgressDTO;
 import com.hwadee.IOTS_SCS.entity.POJO.Course;
 import com.hwadee.IOTS_SCS.entity.POJO.Lesson;
 import com.hwadee.IOTS_SCS.service.CourseService;
@@ -36,7 +38,7 @@ public class CourseController {
     private JwtUtil jwtUtil;
 
     @GetMapping()
-    public CommonResult<List<CourseDTO>> getAllCourses(
+    public CommonResult<List<CourseSimpleDTO>> getAllCourses(
             @RequestParam(value = "status", required = false, defaultValue = "all") String status,
             @RequestHeader("Authorization") String token) {
         String uidFromToken = jwtUtil.getUidFromToken(token);
@@ -44,7 +46,7 @@ public class CourseController {
     }
 
     @GetMapping("/{course_id}")
-    public CommonResult<Course> getCourseInfo(
+    public CommonResult<CourseInfoDTO> getCourseInfo(
             @PathVariable("course_id") String courseId,
             @RequestHeader("Authorization") String token) {
         String uidFromToken = jwtUtil.getUidFromToken(token);
@@ -82,10 +84,17 @@ public class CourseController {
         return courseService.updateLessonStatus(lessonId, courseId, uidFromToken);
     }
 
+    @GetMapping("/{course_id}/progress")
+    public CommonResult<List<ProgressDTO>> getCourseProgress(
+            @PathVariable("course_id") String courseId,
+            @RequestHeader("Authorization") String token) {
+        String uidFromToken = jwtUtil.getUidFromToken(token);
+        return courseService.getCourseProgress(uidFromToken, courseId);
+    }
+
     @GetMapping("/suggestion")
     public CommonResult<?> generateSuggestion(
-            @RequestHeader("Authorization") String token) throws NoApiKeyException, InputRequiredException {
-        String uidFromToken = jwtUtil.getUidFromToken(token);
+            @RequestHeader("Authorization") String token) throws NoApiKeyException, InputRequiredException { String uidFromToken = jwtUtil.getUidFromToken(token);
         return courseService.generateSuggestion(uidFromToken);
     }
 }

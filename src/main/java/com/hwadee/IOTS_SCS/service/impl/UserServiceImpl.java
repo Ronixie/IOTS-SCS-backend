@@ -1,15 +1,12 @@
 package com.hwadee.IOTS_SCS.service.impl;
 
 import com.hwadee.IOTS_SCS.common.result.CommonResult;
-import com.hwadee.IOTS_SCS.entity.DTO.request.UpdateUserInfoDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.request.UserUpdateDTO;
 import com.hwadee.IOTS_SCS.entity.POJO.ApiAccessLog;
 import com.hwadee.IOTS_SCS.entity.POJO.User;
-import com.hwadee.IOTS_SCS.mapper.AdminMapper;
-import com.hwadee.IOTS_SCS.mapper.LogMapper;
 import com.hwadee.IOTS_SCS.mapper.UserMapper;
 import com.hwadee.IOTS_SCS.service.LogService;
 import com.hwadee.IOTS_SCS.service.UserService;
-import com.hwadee.IOTS_SCS.mapper.StudentMapper;
 import com.hwadee.IOTS_SCS.util.JwtUtil;
 
 import lombok.extern.log4j.Log4j;
@@ -55,11 +52,10 @@ public class UserServiceImpl implements UserService {
         User user = new User();
 
         // 查询数据库
-        try {
-            user = userMapper.getAccountUser(value);
-        } catch (Exception e) {
-            return CommonResult.error(404, "用户不存在");
-        }
+
+        user = userMapper.getAccountUser(value);
+
+        if(user == null) return CommonResult.error(404, "用户不存在");
 
         // 验证登录信息
         if (key.equals(user.getPassword())) {
@@ -71,7 +67,7 @@ public class UserServiceImpl implements UserService {
             userInfo.put("role", user.getRole());
             userInfo.put("avatar_url", user.getAvatarUrl());
 
-            result.put("userInfo",userInfo);
+            result.put("user_info",userInfo);
 
             ApiAccessLog log = new ApiAccessLog();
             log.setUserId(user.getUid());
@@ -103,11 +99,18 @@ public class UserServiceImpl implements UserService {
      * @return 更新完成信息
      */
     @Override
-    public CommonResult<Object> updateUser(String uid, UpdateUserInfoDTO dto) {
+    public CommonResult<Object> updateUser(String uid, UserUpdateDTO dto) {
         User user = userMapper.getUidUser(uid);
         update(user, dto);
         userMapper.update(user);
         return CommonResult.success();
+    }
+
+
+    public CommonResult<Object> updatePassword(String uid, String oldPassword, String newPassword) {
+        String password = userMapper.getPassword(uid);
+        if (oldPassword.equals(password) && userMapper.updatePassword(newPassword, uid) > 0) return CommonResult.success();
+        else return CommonResult.error(404,"修改失败");
     }
 
     /**
@@ -120,8 +123,8 @@ public class UserServiceImpl implements UserService {
         return CommonResult.success();
     }
 
-    private void update(User user, UpdateUserInfoDTO dto) {
-        if (dto.getPassword() != null) user.setPassword(dto.getPassword());
+    private void update(User user, UserUpdateDTO dto) {
+        if (dto.getName() != null) user.setName(dto.getName());
         if (dto.getPhone() != null) user.setPhone(dto.getPhone());
         if (dto.getEmail() != null) user.setEmail(dto.getEmail());
         if (dto.getGender() != null) user.setGender(dto.getGender());

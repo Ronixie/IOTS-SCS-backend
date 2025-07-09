@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.hwadee.IOTS_SCS.mapper.CourseMapper">
-    <select id="getAllCoursesByStatus" resultType="com.hwadee.IOTS_SCS.entity.DTO.response.CourseDTO">
+    <select id="getAllCoursesByStatus" resultType="com.hwadee.IOTS_SCS.entity.DTO.response.CourseSimpleDTO">
         SELECT course_id, course_name, users.name AS teacher_name FROM courses, users
         WHERE
             teacher_id=uid AND
@@ -17,7 +17,7 @@
             );
     </select>
 
-    <select id="getAllCourses" resultType="com.hwadee.IOTS_SCS.entity.DTO.response.CourseDTO">
+    <select id="getAllCourses" resultType="com.hwadee.IOTS_SCS.entity.DTO.response.CourseSimpleDTO">
         SELECT course_id, course_name, users.name AS teacher_name FROM courses, users
         WHERE
             teacher_id=uid AND
@@ -29,9 +29,22 @@
             );
     </select>
 
-    <select id="getCourseInfo" resultType="com.hwadee.IOTS_SCS.entity.POJO.Course">
-        select * from courses
-                WHERE course_id=#{courseId};
+    <select id="getCourseInfo" resultType="com.hwadee.IOTS_SCS.entity.DTO.response.CourseInfoDTO">
+        select
+            course_name,
+            status,
+            name AS teacher_name,
+            start_date,
+            end_date,
+            total_lessons,
+            credit,
+            description,
+            cover_image_url
+            from courses, student_course, users
+            WHERE
+                courses.teacher_id=users.uid AND
+                courses.course_id=student_course.course_id AND courses.course_id=#{courseId} AND
+                student_course.student_id=#{uid};
     </select>
 
     <select id="getCourseLessons" resultType="com.hwadee.IOTS_SCS.entity.POJO.Lesson">
@@ -97,5 +110,16 @@
         WHERE
             student_id=#{uid} AND
             DATE(`date`) >= #{fromTime};
+    </select>
+    
+    <select id="getCourseProgress" resultType="com.hwadee.IOTS_SCS.entity.DTO.response.ProgressDTO">
+        SELECT completed_lessons ,progress , last_accessed_lesson_id FROM student_course AS C, student_course_progress AS P
+            WHERE
+                C.student_id=P.student_id AND C.student_id=#{uid} AND
+                C.course_id=P.course_id;
+    </select>
+
+    <select id="getCourseName" resultType="String">
+        SELECT course_name FROM courses WHERE course_id=#{courseId};
     </select>
 </mapper>

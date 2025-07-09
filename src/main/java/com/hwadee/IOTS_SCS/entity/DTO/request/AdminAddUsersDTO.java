@@ -15,7 +15,7 @@ import java.util.List;
 * Copyright (c) 2025, qiershi2006@h163.com All Rights Reserved.
 */
 @Data
-public class AddUsersDTO {
+public class AdminAddUsersDTO {
     private List<String> names;
     private List<String> identities;
     private List<String> phones;

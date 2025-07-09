@@ -2,12 +2,10 @@ package com.hwadee.IOTS_SCS.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.hwadee.IOTS_SCS.common.result.CommonResult;
-import com.hwadee.IOTS_SCS.entity.DTO.request.AddCoursesDTO;
-import com.hwadee.IOTS_SCS.entity.DTO.request.AddUsersDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.request.AdminAddUsersDTO;
 import com.hwadee.IOTS_SCS.entity.DTO.response.LogDTO;
 import com.hwadee.IOTS_SCS.entity.DTO.response.UsersAddedDTO;
 import com.hwadee.IOTS_SCS.service.AdminService;
-import com.hwadee.IOTS_SCS.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +30,7 @@ public class AdminController {
 
     @PostMapping("/users")
     public CommonResult<List<UsersAddedDTO>> addUser(
-            @RequestBody AddUsersDTO users) {
+            @RequestBody AdminAddUsersDTO users) {
         List<String> names = users.getNames();
         List<String> identities = users.getIdentities();
         List<String> phones = users.getPhones();

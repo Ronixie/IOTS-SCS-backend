@@ -2,7 +2,7 @@ package com.hwadee.IOTS_SCS.service.impl;
 
 
 import com.hwadee.IOTS_SCS.entity.DTO.request.UploadFileDTO;
-import com.hwadee.IOTS_SCS.entity.DTO.response.FileDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.response.FileInfoDTO;
 import com.hwadee.IOTS_SCS.entity.POJO.FileInfo;
 import com.hwadee.IOTS_SCS.mapper.FileMapper;
 import com.hwadee.IOTS_SCS.service.FileService;
@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -37,7 +36,7 @@ public class FileServiceImpl implements FileService {
     @Autowired
     private JwtUtil jwtUtil;
 
-    public FileDTO upload(UploadFileDTO dto, HttpServletRequest request) {
+    public FileInfoDTO upload(UploadFileDTO dto, HttpServletRequest request) {
         String basePath = System.getProperty("user.dir") + "/res/file/";
         MultipartFile file = dto.getFile();
 
@@ -72,7 +71,7 @@ public class FileServiceImpl implements FileService {
         info.setUploadedAt(LocalDateTime.now());
         fileMapper.insertFileInfo(info);
 
-        return new FileDTO(fileId, fileUrl, originalFilename, file.getSize());
+        return new FileInfoDTO(fileId, fileUrl, originalFilename, file.getSize());
     }
 
     @Override

@@ -21,6 +21,7 @@ public class ApiAccessLog {
     private Long userId;
     private String ip;
     private String uri;
+    private String method;
     private String query;
     private Integer durationMs;
     private Integer statusCode;

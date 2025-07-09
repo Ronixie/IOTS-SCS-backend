@@ -16,7 +16,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class FileDTO {
+public class FileInfoDTO {
     private String fileId;
     private String fileUrl;
     private String fileName;
@@ -26,7 +26,7 @@ public class FileDTO {
     private String uploaderId;
     private String uploadedAt;
 
-    public FileDTO(String fileId, String fileUrl, String fileName, long fileSize) {
+    public FileInfoDTO(String fileId, String fileUrl, String fileName, long fileSize) {
         this.fileId = fileId;
         this.fileUrl = fileUrl;
         this.fileName = fileName;

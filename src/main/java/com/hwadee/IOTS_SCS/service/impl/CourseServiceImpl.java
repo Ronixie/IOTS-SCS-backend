@@ -3,7 +3,9 @@ package com.hwadee.IOTS_SCS.service.impl;
 import com.alibaba.dashscope.exception.InputRequiredException;
 import com.alibaba.dashscope.exception.NoApiKeyException;
 import com.hwadee.IOTS_SCS.common.result.CommonResult;
-import com.hwadee.IOTS_SCS.entity.DTO.response.CourseDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.response.CourseInfoDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.response.CourseSimpleDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.response.ProgressDTO;
 import com.hwadee.IOTS_SCS.entity.POJO.Course;
 import com.hwadee.IOTS_SCS.entity.POJO.Enrollment;
 import com.hwadee.IOTS_SCS.entity.POJO.Lesson;
@@ -45,8 +47,8 @@ public class CourseServiceImpl implements CourseService {
      * @return 分页课程信息
      */
     @Override
-    public CommonResult<List<CourseDTO>> getAllCourse(String status, String uid) {
-        IPage<CourseDTO> allCourses = new Page<>();
+    public CommonResult<List<CourseSimpleDTO>> getAllCourse(String status, String uid) {
+        IPage<CourseSimpleDTO> allCourses = new Page<>();
         if("all".equals(status.toLowerCase())){
             courseMapper.getAllCourses(allCourses, uid);
         } else {
@@ -62,9 +64,9 @@ public class CourseServiceImpl implements CourseService {
      * @return 课程的详细信息
      */
     @Override
-    public CommonResult<Course> getCourseInfo(String course_id, String uid) {
+    public CommonResult<CourseInfoDTO> getCourseInfo(String course_id, String uid) {
 
-        Course course = courseMapper.getCourseInfo(course_id);
+        CourseInfoDTO course = courseMapper.getCourseInfo(course_id, uid);
         if (course == null) {
             return CommonResult.error(404,"课程不存在");
         }
@@ -110,6 +112,12 @@ public class CourseServiceImpl implements CourseService {
         Map<String, Integer> progressMap = new HashMap<>();
         progressMap.put("progress", progress);
         return CommonResult.success(progressMap);
+    }
+
+    @Override
+    public CommonResult<List<ProgressDTO>> getCourseProgress(String uid, String courseId) {
+        IPage<ProgressDTO> courseProgress = courseMapper.getCourseProgress(new Page<>(), uid, courseId);
+        return CommonResult.successPageData(courseProgress);
     }
 
     @Override

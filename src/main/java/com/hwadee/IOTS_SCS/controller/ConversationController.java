@@ -1,6 +1,7 @@
 package com.hwadee.IOTS_SCS.controller;
 
-import com.hwadee.IOTS_SCS.entity.DTO.*;
+import com.hwadee.IOTS_SCS.entity.DTO.request.CreateConversationReq;
+import com.hwadee.IOTS_SCS.entity.DTO.response.ConversationDTO;
 import com.hwadee.IOTS_SCS.entity.POJO.Conversation;
 import com.hwadee.IOTS_SCS.service.impl.ConversationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;

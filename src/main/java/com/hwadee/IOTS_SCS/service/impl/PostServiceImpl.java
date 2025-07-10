@@ -1,22 +1,22 @@
 package com.hwadee.IOTS_SCS.service.impl;
 
-import com.hwadee.IOTS_SCS.entity.DTO.response.CourseInfoDTO;
-import com.hwadee.IOTS_SCS.entity.POJO.Course;
+import com.hwadee.IOTS_SCS.entity.DTO.request.CreateDiscussionPostReq;
+import com.hwadee.IOTS_SCS.entity.DTO.request.CreateReplyReq;
+import com.hwadee.IOTS_SCS.entity.DTO.request.CreateSharingPostReq;
+import com.hwadee.IOTS_SCS.entity.DTO.response.PostDetailDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.response.PostListDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.response.ReplyDTO;
+import com.hwadee.IOTS_SCS.entity.POJO.FileInfo;
 import com.hwadee.IOTS_SCS.entity.POJO.Post;
 import com.hwadee.IOTS_SCS.entity.POJO.Reply;
 import com.hwadee.IOTS_SCS.entity.POJO.User;
-import com.hwadee.IOTS_SCS.mapper.CourseMapper;
-import com.hwadee.IOTS_SCS.mapper.PostMapper;
-import com.hwadee.IOTS_SCS.mapper.ReplyMapper;
-import com.hwadee.IOTS_SCS.entity.DTO.*;
-import com.hwadee.IOTS_SCS.mapper.UserMapper;
-import com.hwadee.IOTS_SCS.service.CourseService;
+import com.hwadee.IOTS_SCS.mapper.*;
 import com.hwadee.IOTS_SCS.service.PostService;
-import com.hwadee.IOTS_SCS.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,12 +34,14 @@ public class PostServiceImpl implements PostService {
 
     @Autowired
     private CourseMapper courseMapper;
+    @Autowired
+    private FileMapper fileMapper;
 
     // 创建帖子
     @Transactional
     @Override
     public PostDetailDTO createDiscussionPost(CreateDiscussionPostReq request) {
-        // 1. 创建帖子
+        // 创建帖子
         Post post = new Post();
         post.setTitle(request.getTitle());
         post.setContent(request.getContent());
@@ -48,15 +50,21 @@ public class PostServiceImpl implements PostService {
         post.setCreateTime(new Date());
         postMapper.insert(post);
 
-        // 2. 关联文件
-
+        // 处理文件上传
+        List<String> reqFileIds = request.getFileIds();
+        List<String> postFileIds = new ArrayList<>();
+        for(String fileId : reqFileIds) {
+            postFileIds.add(fileId);
+        }
+        post.setFileIds(postFileIds);
 
         return getPostDetail(post.getPostId());
     }
 
+    @Transactional
     @Override
     public PostDetailDTO createSharingPost(CreateSharingPostReq request) {
-        // 1. 创建帖子
+        // 创建帖子
         Post post = new Post();
         post.setTitle(request.getTitle());
         post.setContent(request.getContent());
@@ -64,10 +72,14 @@ public class PostServiceImpl implements PostService {
         post.setCreateTime(new Date());
         postMapper.insert(post);
 
-        // 2. 关联文件
+        // 文件上传
+        List<String> reqFileIds = request.getFileIds();
+        List<String> postFileIds = new ArrayList<>();
+        for(String fileId : reqFileIds) {
+            postFileIds.add(fileId);
+        }
+        post.setFileIds(postFileIds);
 
-
-        // 3. 返回帖子详情
         return getPostDetail(post.getPostId());
     }
 
@@ -81,7 +93,12 @@ public class PostServiceImpl implements PostService {
         }
 
         // 2. 获取关联文件
-
+        List<String> fileIds = post.getFileIds();
+        List<FileInfo> files = new ArrayList<>();
+        for(String fileId : fileIds) {
+            FileInfo fileInfo = fileMapper.getFileInfo(fileId);
+            files.add(fileInfo);
+        }
 
         // 3. 获取回复
         List<Reply> replies = replyMapper.findByPostId(postId);
@@ -92,6 +109,7 @@ public class PostServiceImpl implements PostService {
         dto.setTitle(post.getTitle());
         dto.setContent(post.getContent());
         dto.setCreateTime(post.getCreateTime());
+        dto.setFiles(files);
 
         //发帖人信息
         User author = userMapper.getUidUser(String.valueOf(post.getUserId()));
@@ -104,9 +122,6 @@ public class PostServiceImpl implements PostService {
             dto.setCourseId(post.getCourseId());
             dto.setCourseName(courseMapper.getCourseName(String.valueOf( post.getCourseId())));
         }
-
-        // 文件列表
-
 
         // 回复列表
         dto.setReplies(replies.stream().map(reply -> {
@@ -126,6 +141,19 @@ public class PostServiceImpl implements PostService {
 
         return dto;
     }
+
+    //点赞
+    @Transactional
+    @Override
+    public void likePost(Long postId) {
+        Post post = postMapper.findById(postId);
+        if (post == null) {
+            return;
+        }
+        post.setLikeCount(post.getLikeCount() + 1);
+        postMapper.AddLikeCount(post);
+    }
+
 
     // 创建回复
     @Transactional
@@ -168,6 +196,28 @@ public class PostServiceImpl implements PostService {
             dto.setCourseId(post.getCourseId());
             dto.setCreateTime(post.getCreateTime());
             dto.setReplyCount(Integer.toUnsignedLong(replyMapper.findByPostId(post.getPostId()).size()));
+            dto.setLikeCount(post.getLikeCount());
+
+            User userInfo = userMapper.getUidUser(String.valueOf(post.getUserId()));
+            dto.setUserName(userInfo.getName());
+            dto.setAvatar(userInfo.getAvatarUrl());
+
+            return dto;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PostListDTO> getSharingPostList(Long courseId) {
+        List<Post> posts = postMapper.findByCourseId(courseId);
+
+        return posts.stream().map(post -> {
+            PostListDTO dto = new PostListDTO();
+            dto.setPostId(post.getPostId());
+            dto.setTitle(post.getTitle());
+            dto.setUserId(post.getUserId());
+            dto.setCreateTime(post.getCreateTime());
+            dto.setReplyCount(Integer.toUnsignedLong(replyMapper.findByPostId(post.getPostId()).size()));
+            dto.setLikeCount(post.getLikeCount());
 
             User userInfo = userMapper.getUidUser(String.valueOf(post.getUserId()));
             dto.setUserName(userInfo.getName());
@@ -188,10 +238,10 @@ public class PostServiceImpl implements PostService {
         postMapper.delete(postId);
     }
 
+    //删除回复
     @Transactional
     @Override
     public void deleteReply(Long replyId) {
         replyMapper.delete(replyId);
     }
-        //删除回复
 }

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hwadee.IOTS_SCS.mapper.ReplyMapper">
+    <!-- 根据帖子ID查询回复列表 -->
+    <select id="findByPostId" resultType="com.hwadee.IOTS_SCS.entity.POJO.Reply">
+        SELECT reply_id, post_id, user_id, content, create_time
+        FROM reply
+        WHERE post_id = #{PostId}
+        ORDER BY create_time ASC  <!-- 按创建时间升序排列 -->
+    </select>
+
+    <!-- 插入回复 -->
+    <insert id="insert" parameterType="com.hwadee.IOTS_SCS.entity.POJO.Reply" useGeneratedKeys="true" keyProperty="replyId">
+        INSERT INTO reply (
+            post_id,
+            user_id,
+            content,
+            create_time
+        ) VALUES (
+                     #{PostId},
+                     #{userId},
+                     #{content},
+                     #{createTime}
+                 )
+    </insert>
+
+    <!-- 根据帖子ID删除回复 -->
+    <delete id="deleteByPostId">
+        DELETE FROM reply
+        WHERE post_id = #{postId}
+    </delete>
+
+    <!-- 根据回复ID删除单条回复 -->
+    <delete id="delete">
+        DELETE FROM reply
+        WHERE reply_id = #{replyId}
+    </delete>
+</mapper>

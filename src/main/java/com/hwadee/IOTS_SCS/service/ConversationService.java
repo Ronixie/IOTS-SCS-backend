@@ -1,6 +1,6 @@
 package com.hwadee.IOTS_SCS.service;
 
-import com.hwadee.IOTS_SCS.entity.DTO.ConversationDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.response.ConversationDTO;
 import com.hwadee.IOTS_SCS.entity.POJO.Conversation;
 
 import java.util.List;

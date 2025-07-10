@@ -1,8 +1,8 @@
 package com.hwadee.IOTS_SCS.controller;
 
-import com.hwadee.IOTS_SCS.entity.DTO.CreateNoticeReq;
-import com.hwadee.IOTS_SCS.entity.DTO.NoticeDetailDTO;
-import com.hwadee.IOTS_SCS.entity.DTO.NoticeListDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.request.CreateNoticeReq;
+import com.hwadee.IOTS_SCS.entity.DTO.response.NoticeDetailDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.response.NoticeListDTO;
 import com.hwadee.IOTS_SCS.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

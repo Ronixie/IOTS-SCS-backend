@@ -1,7 +1,5 @@
 package com.hwadee.IOTS_SCS.mapper;
 
-
-
 import com.hwadee.IOTS_SCS.entity.POJO.Conversation;
 
 import java.util.List;

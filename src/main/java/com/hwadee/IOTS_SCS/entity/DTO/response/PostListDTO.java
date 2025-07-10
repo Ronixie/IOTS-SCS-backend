@@ -1,4 +1,4 @@
-package com.hwadee.IOTS_SCS.entity.DTO;
+package com.hwadee.IOTS_SCS.entity.DTO.response;
 
 import lombok.Data;
 
@@ -15,4 +15,5 @@ public class PostListDTO {
     private Long courseId;
     private Date createTime;
     private Long replyCount;
+    private Long likeCount;
 }

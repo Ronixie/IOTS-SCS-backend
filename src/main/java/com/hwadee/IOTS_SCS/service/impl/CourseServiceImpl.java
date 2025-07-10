@@ -2,19 +2,15 @@ package com.hwadee.IOTS_SCS.service.impl;
 
 import com.alibaba.dashscope.exception.InputRequiredException;
 import com.alibaba.dashscope.exception.NoApiKeyException;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hwadee.IOTS_SCS.common.result.CommonResult;
-import com.hwadee.IOTS_SCS.entity.DTO.response.CourseInfoDTO;
-import com.hwadee.IOTS_SCS.entity.DTO.response.CourseSimpleDTO;
-import com.hwadee.IOTS_SCS.entity.DTO.response.ProgressDTO;
-import com.hwadee.IOTS_SCS.entity.POJO.Course;
+import com.hwadee.IOTS_SCS.entity.DTO.response.*;
 import com.hwadee.IOTS_SCS.entity.POJO.Enrollment;
 import com.hwadee.IOTS_SCS.entity.POJO.Lesson;
 import com.hwadee.IOTS_SCS.entity.POJO.Progress;
 import com.hwadee.IOTS_SCS.mapper.CourseMapper;
 import com.hwadee.IOTS_SCS.service.CourseService;
-
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hwadee.IOTS_SCS.util.AIUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -151,4 +147,15 @@ public class CourseServiceImpl implements CourseService {
         courseMapper.courseProgress(uid, courseId, lessons.getTotal(), LocalDateTime.now());
     }
 
+    @Override
+    public CommonResult<IPage<LessonResDTO>> getResources(String courseId) {
+        IPage<LessonResDTO> res = courseMapper.getRes(new Page<>(), courseId);
+        return CommonResult.success(res);
+    }
+
+    @Override
+    public CommonResult<IPage<LessonVideoDTO>> getVideo(String courseId) {
+        IPage<LessonVideoDTO> videos = courseMapper.getVideo(new Page<>(), courseId);
+        return CommonResult.success(videos);
+    }
 }

@@ -40,7 +40,7 @@
     </select>
 
     <!-- 按两个用户ID查询会话（忽略顺序） -->
-    <select id="findByUserIds" resultType="com.hwadee.IOTS_SCS.entity.POJO.Conversation" parameterType="java.lang.Long, java.lang.Long">
+    <select id="findByUserIds" resultType="com.hwadee.IOTS_SCS.entity.POJO.Conversation" parameterType="java.lang.Long">
         SELECT conversation_id, user_a_id, user_b_id, last_active_time, last_message
         FROM conversations
         WHERE (user_a_id = #{userAId} AND user_b_id = #{userBId})

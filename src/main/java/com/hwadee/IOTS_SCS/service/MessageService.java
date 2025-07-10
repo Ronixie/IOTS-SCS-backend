@@ -1,7 +1,7 @@
 package com.hwadee.IOTS_SCS.service;
 
-import com.hwadee.IOTS_SCS.entity.DTO.MessageDTO;
-import com.hwadee.IOTS_SCS.entity.DTO.SendMessageReq;
+import com.hwadee.IOTS_SCS.entity.DTO.response.MessageDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.request.SendMessageReq;
 import com.hwadee.IOTS_SCS.entity.POJO.Message;
 import com.hwadee.IOTS_SCS.entity.POJO.MessageType;
 

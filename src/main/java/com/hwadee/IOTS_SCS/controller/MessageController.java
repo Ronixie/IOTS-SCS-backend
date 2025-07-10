@@ -1,8 +1,8 @@
 package com.hwadee.IOTS_SCS.controller;
 
 
-import com.hwadee.IOTS_SCS.entity.DTO.MessageDTO;
-import com.hwadee.IOTS_SCS.entity.DTO.SendMessageReq;
+import com.hwadee.IOTS_SCS.entity.DTO.response.MessageDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.request.SendMessageReq;
 import com.hwadee.IOTS_SCS.entity.POJO.Message;
 import com.hwadee.IOTS_SCS.service.impl.MessageServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -7,6 +7,7 @@ import java.util.List;
 public interface NoticeMapper {
     void insert(Notice notice);
 
+    //仅获取已发送的通知
     List<Notice> getNoticeListByUserId(Long userId);
 
     //仅获取已发送的通知

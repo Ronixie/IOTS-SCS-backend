@@ -6,7 +6,6 @@ import com.hwadee.IOTS_SCS.common.result.CommonResult;
 import com.hwadee.IOTS_SCS.entity.DTO.response.CourseInfoDTO;
 import com.hwadee.IOTS_SCS.entity.DTO.response.CourseSimpleDTO;
 import com.hwadee.IOTS_SCS.entity.DTO.response.ProgressDTO;
-import com.hwadee.IOTS_SCS.entity.POJO.Course;
 import com.hwadee.IOTS_SCS.entity.POJO.Lesson;
 import com.hwadee.IOTS_SCS.service.CourseService;
 import com.hwadee.IOTS_SCS.util.JwtUtil;
@@ -97,4 +96,5 @@ public class CourseController {
             @RequestHeader("Authorization") String token) throws NoApiKeyException, InputRequiredException { String uidFromToken = jwtUtil.getUidFromToken(token);
         return courseService.generateSuggestion(uidFromToken);
     }
+
 }

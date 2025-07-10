@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.csu.knowledge.mapper.UserLikeMapper">
+
+    <select id="countByKpId" resultType="int">
+        SELECT COUNT(*) FROM knowledge_user_likes 
+        WHERE kp_id = #{kpId}
+    </select>
+
+    <select id="selectByKpIdAndUserId" resultType="org.csu.knowledge.entity.po.UserLike">
+        SELECT * FROM knowledge_user_likes 
+        WHERE kp_id = #{kpId} AND user_id = #{userId}
+        LIMIT 1
+    </select>
+
+</mapper> 

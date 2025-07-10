@@ -120,11 +120,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
             <version>0.9.1</version>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <groupId>javax.xml.bind</groupId>
@@ -169,10 +169,6 @@
                     <artifactId>spring-boot-starter-data-redis</artifactId>
                 </exclusion>
                 <exclusion>
-                    <groupId>io.jsonwebtoken</groupId>
-                    <artifactId>jjwt</artifactId>
-                </exclusion>
-                <exclusion>
                     <groupId>com.github.xiaoymin</groupId>
                     <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
                 </exclusion>
@@ -186,7 +182,12 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
+        <!--hutool工具包-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.8.11</version>
+        </dependency>
         <!--<dependency>
             <groupId>com.sun.mail</groupId>
             <artifactId>jakarta.mail</artifactId>

@@ -1,14 +1,19 @@
 package com.hwadee.IOTS_SCS.controller;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.hwadee.IOTS_SCS.common.result.CommonResult;
 import com.hwadee.IOTS_SCS.entity.DTO.request.AuthLoginDTO;
 import com.hwadee.IOTS_SCS.entity.DTO.request.UserChangePasswordDTO;
 import com.hwadee.IOTS_SCS.entity.DTO.request.UserUpdateDTO;
+import com.hwadee.IOTS_SCS.entity.vo.UserVO;
 import com.hwadee.IOTS_SCS.service.UserService;
 
 
+import org.csu.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -85,5 +90,16 @@ public class UserController {
     @PostMapping("/auth/logout")
     public CommonResult<Object> logout() {
         return userService.logout();
+    }
+
+    // 获取用户信息
+    @GetMapping("/inner/users/{uid}")
+    public Result<UserVO> getUserInfo(@PathVariable("uid") Long uid) {
+        return Result.success(userService.getById(uid));
+    }
+
+    @GetMapping("/inner/users/courses/{uid}")
+    public Result<List<Long>> getCourseIdsByUid(@PathVariable("uid") Long uid) {
+        return Result.success(userService.getCourseIdsByUid(uid));
     }
 }

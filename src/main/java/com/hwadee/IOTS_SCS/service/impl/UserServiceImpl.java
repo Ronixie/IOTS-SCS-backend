@@ -1,9 +1,12 @@
 package com.hwadee.IOTS_SCS.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.hwadee.IOTS_SCS.common.result.CommonResult;
 import com.hwadee.IOTS_SCS.entity.DTO.request.UserUpdateDTO;
 import com.hwadee.IOTS_SCS.entity.POJO.ApiAccessLog;
 import com.hwadee.IOTS_SCS.entity.POJO.User;
+import com.hwadee.IOTS_SCS.entity.vo.UserVO;
+import com.hwadee.IOTS_SCS.mapper.EnrollmentMapper;
 import com.hwadee.IOTS_SCS.mapper.UserMapper;
 import com.hwadee.IOTS_SCS.service.LogService;
 import com.hwadee.IOTS_SCS.service.UserService;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author qiershi
@@ -39,6 +43,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private LogService logService;
 
+    @Autowired
+    private EnrollmentMapper enrollmentMapper;
     /**
      *
      * @param value 登录的用户名或学号
@@ -111,6 +117,17 @@ public class UserServiceImpl implements UserService {
         String password = userMapper.getPassword(uid);
         if (oldPassword.equals(password) && userMapper.updatePassword(newPassword, uid) > 0) return CommonResult.success();
         else return CommonResult.error(404,"修改失败");
+    }
+
+    @Override
+    public UserVO getById(Long uid) {
+        User u=userMapper.getUidUser(String.valueOf(uid));
+        return BeanUtil.copyProperties(u, UserVO.class);
+    }
+
+    @Override
+    public List<Long> getCourseIdsByUid(Long uid) {
+        return enrollmentMapper.getCourseIdsByUid(uid);
     }
 
     /**

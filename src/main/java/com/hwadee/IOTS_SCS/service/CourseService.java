@@ -22,4 +22,8 @@ public interface CourseService {
     CommonResult<List<ProgressDTO>> getCourseProgress(String uid, String courseId);
     void videoProgress(String lessonId, String uid, int currentTime);
     void addStudentCourse(String uid, String courseId);
+
+    List<Long> getStudentIdsByCourseId(Long courseId);
+
+    String getCourseName(Long courseId);
 }

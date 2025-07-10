@@ -15,4 +15,5 @@ public class PostListDTO {
     private Long courseId;
     private Date createTime;
     private Long replyCount;
+    private Long likeCount;
 }

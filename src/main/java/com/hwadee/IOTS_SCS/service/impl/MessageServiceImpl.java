@@ -89,11 +89,8 @@ public class MessageServiceImpl implements MessageService {
         return switch (type) {
             case TEXT -> content.length() > 20 ? content.substring(0, 20) + "..." : content;
             case IMAGE -> "[图片]";
-            case VOICE -> "[语音]";
             case VIDEO -> "[视频]";
             case FILE -> "[文件]";
-            case LOCATION -> "[位置]";
-            case RICH_TEXT -> "[富文本]";
             default -> content;
         };
     }

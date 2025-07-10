@@ -43,6 +43,7 @@ public class NoticeServiceImpl implements NoticeService {
         notice.setUserId(createNoticeReq.getUserId());
         notice.setNoticeTime(createNoticeReq.getNoticeTime());
         notice.setReceiverIds(createNoticeReq.getReceiverIds());
+        notice.setIsSend(false);
         noticeMapper.insert(notice);
     }
 

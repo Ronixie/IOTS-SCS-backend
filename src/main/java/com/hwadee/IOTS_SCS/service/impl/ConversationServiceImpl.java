@@ -30,10 +30,7 @@ public class ConversationServiceImpl implements ConversationService {
     @Override
     public Conversation createOrGetConversation(Long userAId, Long userBId) {
         // 检查是否已存在会话
-        Conversation existConv = conversationMapper.findByUserIds(
-                Math.min(userAId, userBId),
-                Math.max(userAId, userBId)
-        );
+        Conversation existConv = conversationMapper.findByUserIds(userAId, userBId);
         if (existConv != null) {
             return existConv;
         }

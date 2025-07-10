@@ -1,8 +1,8 @@
 package com.hwadee.IOTS_SCS.entity.DTO;
 
+import com.hwadee.IOTS_SCS.entity.POJO.FileInfo;
 import lombok.Data;
 
-import java.io.File;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +17,7 @@ public class PostDetailDTO {
     private Long courseId;
     private String courseName;
     private Date createTime;
-    private List<File> files;
-    private List<ReplyDTO> replies; // 回复列表
+    private List<FileInfo> files;
+    private Long likeCount;
+    private List<ReplyDTO> replies;
 }

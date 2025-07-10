@@ -7,5 +7,4 @@ public class CreateReplyReq {
     private Long postId;
     private Long userId;
     private String content;
-    private Date createTime;
 }

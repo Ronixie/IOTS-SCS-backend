@@ -12,4 +12,6 @@ public interface PostMapper {
     List<Post> findByCourseId(Long courseId);
 
     void delete(Long postId);
+
+    void AddLikeCount(Post post);
 }

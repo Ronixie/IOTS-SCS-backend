@@ -1,4 +1,4 @@
-package com.hwadee.IOTS_SCS.entity.DTO;
+package com.hwadee.IOTS_SCS.entity.DTO.response;
 
 
 import com.hwadee.IOTS_SCS.entity.POJO.MessageType;

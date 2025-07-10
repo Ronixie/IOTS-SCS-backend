@@ -2,7 +2,6 @@ package com.hwadee.IOTS_SCS.entity.POJO;
 
 import lombok.Data;
 
-import java.io.File;
 import java.util.Date;
 import java.util.List;
 
@@ -14,5 +13,6 @@ public class Post {
     private String content;
     private Long userId;
     private Date createTime;
-    private List<File> files;
+    private List<FileInfo> files;
+    private Long likeCount;
 }

@@ -14,5 +14,4 @@ public class Message {
     private String content;      // 消息内容/文件路径/语音路径/视频路径/位置信息/富文本内容
     private Date sendTime;       // 发送时间
     private Boolean isRead;      // 是否已读
-    private String extra;        // JSON格式的额外信息（可用于扩展）
 }

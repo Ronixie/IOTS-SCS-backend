@@ -1,8 +1,8 @@
 package com.hwadee.IOTS_SCS.service;
 
-import com.hwadee.IOTS_SCS.entity.DTO.CreateNoticeReq;
-import com.hwadee.IOTS_SCS.entity.DTO.NoticeDetailDTO;
-import com.hwadee.IOTS_SCS.entity.DTO.NoticeListDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.request.CreateNoticeReq;
+import com.hwadee.IOTS_SCS.entity.DTO.response.NoticeDetailDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.response.NoticeListDTO;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.List;

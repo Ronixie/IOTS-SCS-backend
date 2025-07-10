@@ -1,6 +1,7 @@
-package com.hwadee.IOTS_SCS.entity.DTO;
+package com.hwadee.IOTS_SCS.entity.DTO.request;
 
-import java.io.File;
+import com.hwadee.IOTS_SCS.entity.POJO.FileInfo;
+
 import java.util.Date;
 import java.util.List;
 
@@ -10,5 +11,5 @@ public class CreateSharingPostReq {
     private String content;
     private Date createTime;
     private Long userId;
-    private List<File> files;
+    private List<FileInfo> files;
 }

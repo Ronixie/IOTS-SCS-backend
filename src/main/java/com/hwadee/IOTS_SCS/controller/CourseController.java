@@ -97,4 +97,11 @@ public class CourseController {
             @RequestHeader("Authorization") String token) throws NoApiKeyException, InputRequiredException { String uidFromToken = jwtUtil.getUidFromToken(token);
         return courseService.generateSuggestion(uidFromToken);
     }
+
+//    @GetMapping("/{course_id}/lessons/resource")
+//
+//
+//    @GetMapping("/{course_id}/lessons/video")
+//
+
 }

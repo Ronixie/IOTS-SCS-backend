@@ -1,8 +1,9 @@
 package com.hwadee.IOTS_SCS.controller;
 
 import com.hwadee.IOTS_SCS.common.result.CommonResult;
-import com.hwadee.IOTS_SCS.entity.DTO.request.UploadFileDTO;
 import com.hwadee.IOTS_SCS.entity.DTO.response.FileInfoDTO;
+import com.hwadee.IOTS_SCS.entity.POJO.FileInfo;
+import com.hwadee.IOTS_SCS.mapper.FileMapper;
 import com.hwadee.IOTS_SCS.service.FileService;
 
 import com.hwadee.IOTS_SCS.util.JwtUtil;
@@ -11,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 
@@ -23,12 +25,15 @@ public class FileController {
 
     @Autowired
     private JwtUtil jwtUtil;
+    @Autowired
+    private FileMapper fileMapper;
 
     @PostMapping
     @ResponseBody
-    public CommonResult<FileInfoDTO> upload(@RequestBody UploadFileDTO uploadFileDTO,
+    public CommonResult<FileInfoDTO> upload(MultipartFile file, String file_usage,
+                                            @RequestHeader("Authorization") String token,
                                             HttpServletRequest request) {
-        return CommonResult.success(fileService.upload(uploadFileDTO, request));
+        return CommonResult.success(fileService.upload(file, file_usage, token , request));
     }
 
     @GetMapping
@@ -38,7 +43,9 @@ public class FileController {
             HttpServletResponse response)
             throws IOException {
         // 权限判断
-        if (fileService.isDownloadAllowed(fileId)) {
+        FileInfo info = fileMapper.getFileInfo(fileId);
+
+        if (info.getFileUsage().contains("lesson") && fileService.isDownloadAllowed(fileId)) {
             response.sendError(403,"教师未开放下载权限");
             return;
         }

@@ -2,16 +2,20 @@ package com.hwadee.IOTS_SCS.service.impl;
 
 import com.hwadee.IOTS_SCS.common.result.CommonResult;
 import com.hwadee.IOTS_SCS.entity.DTO.request.UserUpdateDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.response.FileInfoDTO;
 import com.hwadee.IOTS_SCS.entity.POJO.ApiAccessLog;
 import com.hwadee.IOTS_SCS.entity.POJO.User;
 import com.hwadee.IOTS_SCS.mapper.UserMapper;
+import com.hwadee.IOTS_SCS.service.FileService;
 import com.hwadee.IOTS_SCS.service.LogService;
 import com.hwadee.IOTS_SCS.service.UserService;
 import com.hwadee.IOTS_SCS.util.JwtUtil;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -38,6 +42,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private LogService logService;
+
+    @Autowired
+    private FileService fileService;
 
     /**
      *
@@ -121,6 +128,18 @@ public class UserServiceImpl implements UserService {
     public CommonResult<Object> logout() {
         //登出处理
         return CommonResult.success();
+    }
+
+    @Override
+    public String getUserAvatar(String uid) {
+        String userAvatar = userMapper.getUserAvatar(uid);
+        return userAvatar;
+    }
+
+    @Override
+    public CommonResult<Object> updateAvatar(MultipartFile file,String token, HttpServletRequest request) {
+        FileInfoDTO avatarInfo = fileService.upload(file, "用户头像", token, request);
+        return CommonResult.success(avatarInfo);
     }
 
     private void update(User user, UserUpdateDTO dto) {

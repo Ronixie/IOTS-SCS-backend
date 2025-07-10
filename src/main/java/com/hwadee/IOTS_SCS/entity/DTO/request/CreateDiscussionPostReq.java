@@ -11,5 +11,5 @@ public class CreateDiscussionPostReq {
     private String content;
     private Long courseId;       // 讨论帖关联课程ID
     private Long userId;
-    private List<FileInfo> files;
+    private List<String> fileIds;
 }

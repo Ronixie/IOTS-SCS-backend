@@ -2,10 +2,8 @@ package com.hwadee.IOTS_SCS.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.hwadee.IOTS_SCS.entity.DTO.response.CourseInfoDTO;
-import com.hwadee.IOTS_SCS.entity.DTO.response.ProgressDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.response.*;
 import com.hwadee.IOTS_SCS.entity.POJO.Course;
-import com.hwadee.IOTS_SCS.entity.DTO.response.CourseSimpleDTO;
 import com.hwadee.IOTS_SCS.entity.POJO.Enrollment;
 import com.hwadee.IOTS_SCS.entity.POJO.Lesson;
 import com.hwadee.IOTS_SCS.entity.POJO.Progress;
@@ -29,5 +27,7 @@ public interface CourseMapper extends BaseMapper<Course> {
     IPage<ProgressDTO> getCourseProgress(IPage<ProgressDTO> page, String uid, String courseId);
 
     String getCourseName(String courseId);
+    IPage<LessonResDTO> getRes(IPage<LessonResDTO> page, String courseId);
+    IPage<LessonVideoDTO> getVideo(IPage<LessonVideoDTO> page, String courseId);
 
 }

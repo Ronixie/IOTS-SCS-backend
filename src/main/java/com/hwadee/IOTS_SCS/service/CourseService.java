@@ -2,11 +2,9 @@ package com.hwadee.IOTS_SCS.service;
 
 import com.alibaba.dashscope.exception.InputRequiredException;
 import com.alibaba.dashscope.exception.NoApiKeyException;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.hwadee.IOTS_SCS.common.result.CommonResult;
-import com.hwadee.IOTS_SCS.entity.DTO.response.CourseInfoDTO;
-import com.hwadee.IOTS_SCS.entity.DTO.response.CourseSimpleDTO;
-import com.hwadee.IOTS_SCS.entity.DTO.response.ProgressDTO;
-import com.hwadee.IOTS_SCS.entity.POJO.Course;
+import com.hwadee.IOTS_SCS.entity.DTO.response.*;
 import com.hwadee.IOTS_SCS.entity.POJO.Lesson;
 
 import java.util.List;
@@ -26,4 +24,6 @@ public interface CourseService {
     List<Long> getStudentIdsByCourseId(Long courseId);
 
     String getCourseName(Long courseId);
+    CommonResult<IPage<LessonResDTO>> getResources(String courseId);
+    CommonResult<IPage<LessonVideoDTO>> getVideo(String courseId);
 }

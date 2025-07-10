@@ -1,7 +1,6 @@
 package com.hwadee.IOTS_SCS.service.impl;
 
 
-import com.hwadee.IOTS_SCS.entity.DTO.request.UploadFileDTO;
 import com.hwadee.IOTS_SCS.entity.DTO.response.FileInfoDTO;
 import com.hwadee.IOTS_SCS.entity.POJO.FileInfo;
 import com.hwadee.IOTS_SCS.mapper.FileMapper;
@@ -36,12 +35,10 @@ public class FileServiceImpl implements FileService {
     @Autowired
     private JwtUtil jwtUtil;
 
-    public FileInfoDTO upload(UploadFileDTO dto, HttpServletRequest request) {
+    public FileInfoDTO upload(MultipartFile file, String fileUsage, String token, HttpServletRequest request) {
         String basePath = System.getProperty("user.dir") + "/res/file/";
-        MultipartFile file = dto.getFile();
 
         if(file.isEmpty()) throw new IllegalArgumentException("上传文件不能为空");
-
         String originalFilename = file.getOriginalFilename();
         String extension = StringUtils.getFilenameExtension(originalFilename);
         String fileId = UUID.randomUUID().toString();
@@ -61,13 +58,15 @@ public class FileServiceImpl implements FileService {
                 request.getServerPort() +
                 "/files?file_id=" + fileId;
 
+        System.out.println(fileId);
         FileInfo info = new FileInfo();
         info.setFileId(fileId);
         info.setFileUrl(fileUrl);
         info.setFileName(originalFilename);
-        info.setFileUsage("教学");
+        info.setFileUsage(extension + ", " + fileUsage);
         info.setFileSize(String.valueOf(file.getSize()));
-        info.setUploaderId(Long.parseLong(jwtUtil.getUidFromToken(dto.getToken().substring(7))));
+        info.setStatus("in_use");
+        info.setUploaderId(Long.parseLong(jwtUtil.getUidFromToken(token.substring(7))));
         info.setUploadedAt(LocalDateTime.now());
         fileMapper.insertFileInfo(info);
 

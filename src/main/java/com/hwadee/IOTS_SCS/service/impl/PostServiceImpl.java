@@ -13,11 +13,17 @@ import com.hwadee.IOTS_SCS.mapper.CourseMapper;
 import com.hwadee.IOTS_SCS.mapper.PostMapper;
 import com.hwadee.IOTS_SCS.mapper.ReplyMapper;
 import com.hwadee.IOTS_SCS.mapper.UserMapper;
+import com.hwadee.IOTS_SCS.entity.POJO.FileInfo;
+import com.hwadee.IOTS_SCS.entity.POJO.Post;
+import com.hwadee.IOTS_SCS.entity.POJO.Reply;
+import com.hwadee.IOTS_SCS.entity.POJO.User;
+import com.hwadee.IOTS_SCS.mapper.*;
 import com.hwadee.IOTS_SCS.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,6 +41,8 @@ public class PostServiceImpl implements PostService {
 
     @Autowired
     private CourseMapper courseMapper;
+    @Autowired
+    private FileMapper fileMapper;
 
     // 创建帖子
     @Transactional
@@ -51,6 +59,12 @@ public class PostServiceImpl implements PostService {
 
         // 处理文件上传
 
+        List<String> reqFileIds = request.getFileIds();
+        List<String> postFileIds = new ArrayList<>();
+        for(String fileId : reqFileIds) {
+            postFileIds.add(fileId);
+        }
+        post.setFileIds(postFileIds);
 
         return getPostDetail(post.getPostId());
     }
@@ -69,6 +83,13 @@ public class PostServiceImpl implements PostService {
         // 文件上传
 
 
+        List<String> reqFileIds = request.getFileIds();
+        List<String> postFileIds = new ArrayList<>();
+        for(String fileId : reqFileIds) {
+            postFileIds.add(fileId);
+        }
+        post.setFileIds(postFileIds);
+
         return getPostDetail(post.getPostId());
     }
 
@@ -82,7 +103,12 @@ public class PostServiceImpl implements PostService {
         }
 
         // 2. 获取关联文件
-
+        List<String> fileIds = post.getFileIds();
+        List<FileInfo> files = new ArrayList<>();
+        for(String fileId : fileIds) {
+            FileInfo fileInfo = fileMapper.getFileInfo(fileId);
+            files.add(fileInfo);
+        }
 
         // 3. 获取回复
         List<Reply> replies = replyMapper.findByPostId(postId);
@@ -93,6 +119,7 @@ public class PostServiceImpl implements PostService {
         dto.setTitle(post.getTitle());
         dto.setContent(post.getContent());
         dto.setCreateTime(post.getCreateTime());
+        dto.setFiles(files);
 
         //发帖人信息
         User author = userMapper.getUidUser(String.valueOf(post.getUserId()));
@@ -105,9 +132,6 @@ public class PostServiceImpl implements PostService {
             dto.setCourseId(post.getCourseId());
             dto.setCourseName(courseMapper.getCourseName(String.valueOf( post.getCourseId())));
         }
-
-        // 文件列表
-
 
         // 回复列表
         dto.setReplies(replies.stream().map(reply -> {

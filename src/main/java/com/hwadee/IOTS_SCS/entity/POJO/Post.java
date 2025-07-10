@@ -13,6 +13,6 @@ public class Post {
     private String content;
     private Long userId;
     private Date createTime;
-    private List<FileInfo> files;
+    private List<String> fileIds;
     private Long likeCount;
 }

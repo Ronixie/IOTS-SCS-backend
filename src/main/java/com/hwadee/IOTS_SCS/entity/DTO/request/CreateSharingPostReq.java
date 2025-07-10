@@ -11,5 +11,5 @@ public class CreateSharingPostReq {
     private String content;
     private Date createTime;
     private Long userId;
-    private List<FileInfo> files;
+    private List<String> fileIds;
 }

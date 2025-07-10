@@ -12,4 +12,8 @@
     <select id="isDownloadAllowed">
         SELECT allow_download FROM lessons WHERE file_id=#{fileId};
     </select>
+
+    <select id="getFileInfo" resultType="com.hwadee.IOTS_SCS.entity.POJO.FileInfo">
+        SELECT * FROM files WHERE file_id=#{fileId};
+    </select>
 </mapper>

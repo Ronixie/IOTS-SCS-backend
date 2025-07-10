@@ -1,0 +1,149 @@
+[
+    {
+        "id": "exam-route",
+        "order": 0,
+        "uri": "lb://exam-service",
+        "predicates": [
+            {
+                "name": "Path",
+                "args": {
+                    "_genkey_0": "/api/exams/**"
+                }
+            }
+        ],
+        "filters": [
+            {
+                "name": "StripPrefix",
+                "args": {
+                    "parts": 1
+                }
+            }
+        ]
+    },
+    {
+        "id": "ai-route",
+        "order": 0,
+        "uri": "lb://ai-service",
+        "predicates": [
+            {
+                "name": "Path",
+                "args": {
+                    "_genkey_0": "/api/ai/**"
+                }
+            }
+        ],
+        "filters": [
+            {
+                "name": "StripPrefix",
+                "args": {
+                    "parts": 1
+                }
+            }
+        ]
+    },
+    {
+        "id": "homework-route",
+        "order": 0,
+        "uri": "lb://homework-service",
+        "predicates": [
+            {
+                "name": "Path",
+                "args": {
+                    "_genkey_0": "/api/assignments/**"
+                }
+            }
+        ],
+        "filters": [
+            {
+                "name": "StripPrefix",
+                "args": {
+                    "parts": 1
+                }
+            }
+        ]
+    },
+    {
+        "id": "knowledge-route",
+        "order": 0,
+        "uri": "lb://knowledge-service",
+        "predicates": [
+            {
+                "name": "Path",
+                "args": {
+                    "_genkey_0": "/api/knowledge/**"
+                }
+            }
+        ],
+        "filters": [
+            {
+                "name": "StripPrefix",
+                "args": {
+                    "parts": 1
+                }
+            }
+        ]
+    },
+    {
+        "id": "learnCenter-route",
+        "order": 0,
+        "uri": "lb://learn-service",
+        "predicates": [
+            {
+                "name": "Path",
+                "args": {
+                    "_genkey_0": "/api/learn/analysis/**"
+                }
+            }
+        ],
+        "filters": [
+            {
+                "name": "StripPrefix",
+                "args": {
+                    "parts": 1
+                }
+            }
+        ]
+    },
+    {
+        "id": "user-route",
+        "order": 0,
+        "uri": "lb://user-service",
+        "predicates": [
+            {
+                "name": "Path",
+                "args": {
+                    "_genkey_0": "/api/users/**"
+                }
+            }
+        ],
+        "filters": [
+            {
+                "name": "StripPrefix",
+                "args": {
+                    "parts": 1
+                }
+            }
+        ]
+    },
+    {
+        "id": "back-service-route",
+        "order": 0,
+        "uri": "lb://back-service",
+        "predicates": [
+            {
+                "name": "Path",
+                "args": {
+                    "_genkey_0": "/messages/**",
+                    "_genkey_1": "/api/admin/**",
+                    "_genkey_2": "/conversations/**",
+                    "_genkey_3": "/api/courses/**",
+                    "_genkey_4": "/api/evaluation/**",
+                    "_genkey_5": "/api/files/**",
+                    "_genkey_6": "/api/notice/**",
+                    "_genkey_7": "/api/auth/**",
+                    "_genkey_8": "/api/users/**"
+                }
+            }
+        ]
+    }
+]

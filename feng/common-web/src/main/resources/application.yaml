@@ -1,0 +1,8 @@
+csu:
+  token:
+    # token过期时间
+    short-tokenTTL: 30m
+    long-tokenTTL: 1d
+    # 加密密钥
+    short-secret-key: csu
+    long-secret-key: csu

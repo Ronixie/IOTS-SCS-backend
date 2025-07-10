@@ -95,6 +95,7 @@ public class UserController {
             @RequestHeader("Authorization") String token,
             HttpServletRequest request,
             MultipartFile avatar) {
+        System.out.println("----------------------");
         return userService.updateAvatar(avatar, token, request);
     }
 

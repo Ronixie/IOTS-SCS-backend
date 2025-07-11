@@ -166,11 +166,13 @@ public class UserController {
 
     // 获取用户信息
     @GetMapping("/inner/users/{uid}")
+    @ResponseBody
     public Result<UserVO> getUserInfo(@PathVariable("uid") Long uid) {
         return Result.success(userService.getById(uid));
     }
 
     @GetMapping("/inner/users/courses/{uid}")
+    @ResponseBody
     public Result<List<Long>> getCourseIdsByUid(@PathVariable("uid") Long uid) {
         return Result.success(userService.getCourseIdsByUid(uid));
     }

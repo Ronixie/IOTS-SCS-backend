@@ -15,5 +15,5 @@ public interface NoticeMapper {
 
     void update(Notice notice);
 
-    List<Notice> getNoticeListByIsSend(boolean b);
+    List<Notice> getNoticeListByIsSend(char b);
 }

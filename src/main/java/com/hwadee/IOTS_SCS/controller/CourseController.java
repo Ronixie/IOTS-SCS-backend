@@ -12,6 +12,7 @@ import com.hwadee.IOTS_SCS.entity.POJO.Lesson;
 import com.hwadee.IOTS_SCS.service.CourseService;
 import com.hwadee.IOTS_SCS.util.JwtUtil;
 
+import org.csu.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -97,5 +98,15 @@ public class CourseController {
     public CommonResult<?> generateSuggestion(
             @RequestHeader("Authorization") String token) throws NoApiKeyException, InputRequiredException { String uidFromToken = jwtUtil.getUidFromToken(token);
         return courseService.generateSuggestion(uidFromToken);
+    }
+
+    @GetMapping("/inner/name/{courseId}")
+    public Result<String> getCourseName(@PathVariable("courseId") Long courseId) {
+        return Result.success(courseService.getCourseName(courseId));
+    }
+
+    @GetMapping("/inner/students/{courseId}")
+    public Result<List<Long>> getStudentIdsByCourseId(@PathVariable("courseId") Long courseId) {
+        return Result.success(courseService.getStudentIdsByCourseId(courseId));
     }
 }

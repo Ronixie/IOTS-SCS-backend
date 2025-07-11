@@ -154,7 +154,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public CommonResult<Object> updateAvatar(MultipartFile file,String token, HttpServletRequest request) {
-        FileInfoDTO avatarInfo = fileService.upload(file, "用户头像", token, request);
+        FileInfoDTO avatarInfo = fileService.uploadAvatar(file, token, request);
         return CommonResult.success(avatarInfo);
     }
 

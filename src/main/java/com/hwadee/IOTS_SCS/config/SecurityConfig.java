@@ -56,6 +56,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/login", "/api/captcha","/api/courses/inner/name/*","/api/inner/users/*","/api/inner/users/courses/*","/api/courses/inner/students/*").permitAll() // 公开访问
+                        .requestMatchers("/api/users/{uid}/avatar").permitAll()
                         .anyRequest().authenticated() // 其他请求需认证
                 )
                 // 注册过滤器

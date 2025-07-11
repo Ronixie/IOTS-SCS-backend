@@ -13,11 +13,14 @@ import org.csu.utils.Result;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
 
 import java.util.List;
@@ -34,7 +37,7 @@ import java.util.List;
  * Copyright (c) 2025, qiershi2006@163.com All Rights Reserved.
  */
 
-@RestController
+@Controller
 @RequestMapping("/api")
 public class UserController {
 
@@ -44,6 +47,7 @@ public class UserController {
 
     // 用户登录
     @PostMapping("/auth/login")
+    @ResponseBody
     public CommonResult<Object> login(@RequestBody AuthLoginDTO dto) {
         String way = dto.getWay();
         String account = dto.getUsername();
@@ -55,12 +59,14 @@ public class UserController {
 
     // 获取用户详细信息
     @GetMapping("/users/{uid}")
+    @ResponseBody
     public CommonResult<Object> getUser(@PathVariable("uid") String uid) {
         return userService.getUserInfo(uid);
     }
 
     // 修改用户信息
     @PutMapping(value = "/users/{uid}")
+    @ResponseBody
     public CommonResult<Object> updateUser(
             @PathVariable("uid") String uid,
             @RequestBody UserUpdateDTO user) {
@@ -69,6 +75,7 @@ public class UserController {
 
     // 修改用户密码
     @PutMapping(value = "/auth/{uid}")
+    @ResponseBody
     public CommonResult<Object> updatePassword(
             @PathVariable("uid") String uid,
             @RequestBody UserChangePasswordDTO dto) {
@@ -79,33 +86,80 @@ public class UserController {
 
     // 发送用户头像
     @GetMapping("/users/{uid}/avatar")
-    public void getAvatar(
-            @PathVariable("uid") String uid,
-            HttpServletResponse response)
-            throws IOException {
-        String avatar = userService.getUserAvatar(uid);
+    public void getAvatar(@PathVariable("uid") String uid, HttpServletResponse response) {
+        System.out.println("/----------------------------------/");
+        try {
+            String avatarFileName = uid + "_avatar.jpg";
+            String basePath = System.getProperty("user.dir") + File.separator + "res" + File.separator + "file" + File.separator;
+            File avatarFile;
 
-        File avatarFile = new File("res/file/" + avatar.substring(35));
+            if (StringUtils.hasText(avatarFileName)) {
+                avatarFile = new File(basePath + avatarFileName);
+                if (!avatarFile.exists()) {
+                    System.out.println("头像不存在，改为默认");
+                    avatarFile = new File(basePath + "default" + File.separator + "avatar.png");
+                }
+            } else {
+                System.out.println("未设置头像，使用默认");
+                avatarFile = new File(basePath + "default" + File.separator + "avatar.png");
+            }
 
-        if(!avatarFile.exists()) avatarFile = new File("res/file/default/avatar.png");
+            if (!avatarFile.exists()) {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                response.setContentType("text/plain");
+                response.getWriter().write("头像文件不存在");
+                return;
+            }
 
-        response.setContentType("image/png");
-        response.setHeader("Cache-Control", "no-cache");
-        Files.copy(avatarFile.toPath(), response.getOutputStream());
-        response.flushBuffer();
+            // 设置响应类型
+            String fileName = avatarFile.getName().toLowerCase();
+            if (fileName.endsWith(".png")) {
+                response.setContentType("image/png");
+            } else if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg")) {
+                response.setContentType("image/jpeg");
+            } else if (fileName.endsWith(".gif")) {
+                response.setContentType("image/gif");
+            } else {
+                response.setContentType("application/octet-stream");
+            }
+
+            // 禁止缓存
+            response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
+            response.setHeader("Pragma", "no-cache");
+            response.setDateHeader("Expires", 0);
+
+            // 复制文件到响应流
+            try (OutputStream os = response.getOutputStream()) {
+                Files.copy(avatarFile.toPath(), os);
+                response.flushBuffer();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            try {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                response.setContentType("text/plain");
+                response.getWriter().write("服务器错误，无法加载头像");
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        }
     }
 
+
+
     @PostMapping("/users/{user_id}/avatar")
+    @ResponseBody
     public CommonResult<Object> updateUserAvatar(
             @RequestHeader("Authorization") String token,
             HttpServletRequest request,
             MultipartFile avatar) {
-        System.out.println("----------------------");
         return userService.updateAvatar(avatar, token, request);
     }
 
     // 用户登出
     @PostMapping("/auth/logout")
+    @ResponseBody
     public CommonResult<Object> logout() {
         return userService.logout();
     }

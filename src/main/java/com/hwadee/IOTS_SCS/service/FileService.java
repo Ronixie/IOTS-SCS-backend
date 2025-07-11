@@ -6,5 +6,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface FileService {
     FileInfoDTO upload(MultipartFile file, String fileUsage, String token, HttpServletRequest request);
+    FileInfoDTO uploadAvatar(MultipartFile file, String token, HttpServletRequest request);
     boolean isDownloadAllowed(String fileId);
 }

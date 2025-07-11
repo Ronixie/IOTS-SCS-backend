@@ -9,38 +9,40 @@
         <result column="service_evaluation" jdbcType="INTEGER" property="serviceEvaluation" />
         <result column="attitude_evaluation" jdbcType="INTEGER" property="attitudeEvaluation" />
         <result column="effect_evaluation" jdbcType="INTEGER" property="effectEvaluation" />
-        <result column="evaluation_content" jdbcType="VARCHAR" property="evaluationContent" />
+        <result column="comment" jdbcType="VARCHAR" property="evaluationContent" />
     </resultMap>
 
     <!-- 新增：查询评价详情（含课程信息） -->
     <select id="selectEvaluationDetailByCourseId" resultType="com.hwadee.IOTS_SCS.entity.DTO.EvaluationDetailDTO">
         SELECT
-            e.evaluation_id AS evaluationId,
+            e.id AS evaluationId,
             e.course_id AS courseId,
             c.course_name AS courseName,
-            c.teacher AS teacher,
-            e.content_evaluation,
-            e.service_evaluation,
-            e.attitude_evaluation,
-            e.effect_evaluation,
-            e.evaluation_content
+            u.name AS teacher,
+            e.content_evaluation AS contentEvaluation,
+            e.service_evaluation AS serviceEvaluation,
+            e.attitude_evaluation AS attitudeEvaluation,
+            e.effect_evaluation AS effectEvaluation,
+            e.comment AS evaluationContent
         FROM
-            evaluation e
+            course_evaluation e
                 LEFT JOIN
-            course c ON e.course_id = c.course_id
+            courses c ON e.course_id = c.course_id
+                LEFT JOIN
+            users u ON c.teacher_id = u.uid
         WHERE
             e.course_id = #{courseId}
     </select>
 
 
-    <insert id="insert" parameterType="com.hwadee.IOTS_SCS.entity.POJO.Evaluation" useGeneratedKeys="true" keyProperty="evaluationId">
-        INSERT INTO evaluation (
+    <insert id="insert" parameterType="com.hwadee.IOTS_SCS.entity.POJO.Evaluation" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO course_evaluation (
             course_id,
             content_evaluation,
             service_evaluation,
             attitude_evaluation,
             effect_evaluation,
-            evaluation_content
+            comment
         ) VALUES (
                      #{courseId},
                      #{contentEvaluation},
@@ -52,21 +54,21 @@
     </insert>
 
     <select id="selectByCourseId" resultMap="BaseResultMap">
-        SELECT * FROM evaluation WHERE course_id = #{courseId}
+        SELECT * FROM course_evaluation WHERE course_id = #{courseId}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
-        SELECT * FROM evaluation
+        SELECT * FROM course_evaluation
     </select>
 
     <select id="selectById" resultMap="BaseResultMap">
-        SELECT * FROM evaluation WHERE evaluation_id = #{id}
+        SELECT * FROM course_evaluation WHERE id = #{id}
     </select>
 
     <select id="calculateAverageScore" resultType="double">
         SELECT AVG(
                            (content_evaluation + service_evaluation + attitude_evaluation + effect_evaluation) / 4.0
-               ) FROM evaluation WHERE course_id = #{courseId}
+               ) FROM course_evaluation WHERE course_id = #{courseId}
     </select>
 
 </mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.csu.knowledge.mapper.UserFavoriteMapper">
+
+    <select id="countByKpId" resultType="int">
+        SELECT COUNT(*) FROM knowledge_user_favorites 
+        WHERE kp_id = #{kpId}
+    </select>
+
+    <select id="selectByKpIdAndUserId" resultType="org.csu.knowledge.entity.po.UserFavorite">
+        SELECT * FROM knowledge_user_favorites 
+        WHERE kp_id = #{kpId} AND user_id = #{userId}
+        LIMIT 1
+    </select>
+
+    <select id="selectByUserId" resultType="org.csu.knowledge.entity.po.UserFavorite">
+        SELECT * FROM knowledge_user_favorites 
+        WHERE user_id = #{userId}
+        ORDER BY created_at DESC
+        LIMIT #{limit}
+    </select>
+
+    <select id="countByUserId" resultType="int">
+        SELECT COUNT(*) FROM knowledge_user_favorites 
+        WHERE user_id = #{userId}
+    </select>
+
+</mapper> 

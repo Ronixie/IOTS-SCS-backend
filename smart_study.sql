@@ -11,7 +11,7 @@
  Target Server Version : 80011 (8.0.11)
  File Encoding         : 65001
 
- Date: 05/07/2025 15:08:43
+ Date: 10/07/2025 21:00:09
 */
 
 SET NAMES utf8mb4;
@@ -26,6 +26,7 @@ CREATE TABLE `activity_logs`  (
   `user_id` bigint(20) NOT NULL COMMENT '操作用户ID',
   `ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'IP地址',
   `uri` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '用户访问URI',
+  `method` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `query` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `duration_ms` int(11) NULL DEFAULT NULL COMMENT '停留时间(单位:ms)',
   `status_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '状态码',
@@ -34,7 +35,20 @@ CREATE TABLE `activity_logs`  (
   PRIMARY KEY (`log_id`) USING BTREE,
   INDEX `fk_logs_user`(`user_id` ASC) USING BTREE,
   CONSTRAINT `fk_logs_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`uid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 703 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for conversation
+-- ----------------------------
+DROP TABLE IF EXISTS `conversation`;
+CREATE TABLE `conversation`  (
+  `conversationId` bigint(20) NOT NULL AUTO_INCREMENT,
+  `userAId` bigint(20) NOT NULL,
+  `userBId` bigint(20) NOT NULL,
+  `lastActiveTime` datetime NOT NULL,
+  `lastMessage` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  PRIMARY KEY (`conversationId`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for courses
@@ -60,14 +74,14 @@ CREATE TABLE `courses`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `files`;
 CREATE TABLE `files`  (
-  `file_id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '文件唯一标识',
+  `file_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '文件唯一标识',
   `file_url` varchar(2048) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '文件可访问URL',
-  `file_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '文件名',
+  `file_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '文件名',
   `file_size` double NOT NULL COMMENT '文件大小',
   `file_usage` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '文件用处, 如\"assignment_submission\", \"course_submission\"等',
   `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '状态, 如\"deleted\", \"saved\"等',
-  `uploader_id` bigint(20) NOT NULL COMMENT '上传者id',
-  `uploaded_at` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '上传时间',
+  `uploader_id` bigint(20) NULL DEFAULT NULL COMMENT '上传者id',
+  `uploaded_at` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '上传时间',
   PRIMARY KEY (`file_id`) USING BTREE,
   INDEX `fk_files_users`(`uploader_id` ASC) USING BTREE,
   CONSTRAINT `fk_files_users` FOREIGN KEY (`uploader_id`) REFERENCES `users` (`uid`) ON DELETE RESTRICT ON UPDATE RESTRICT
@@ -81,17 +95,79 @@ CREATE TABLE `lessons`  (
   `lesson_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '课时唯一标识',
   `course_id` bigint(20) NOT NULL COMMENT '所属课程',
   `lesson_title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '课时名',
-  `lesson_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '课时类型',
-  `file_id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '文件id',
-  `text_content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '文本内容',
   `order` int(11) NOT NULL COMMENT '再课程中的顺序',
-  `allow_download` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '是否允许下载',
+  `video_file_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '视频地址',
+  `file_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '文件id',
+  `resource_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '课时资源类型',
+  `text_content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '文本内容',
+  `allow_download` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '是否允许下载',
   PRIMARY KEY (`lesson_id`) USING BTREE,
   INDEX `fk_lessons_courses`(`course_id` ASC) USING BTREE,
   INDEX `fk_lessons_file`(`file_id` ASC) USING BTREE,
-  CONSTRAINT `fk_lessons_courses` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `fk_lessons_file` FOREIGN KEY (`file_id`) REFERENCES `files` (`file_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+  CONSTRAINT `fk_lessons_courses` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for message
+-- ----------------------------
+DROP TABLE IF EXISTS `message`;
+CREATE TABLE `message`  (
+  `msgId` bigint(20) NOT NULL AUTO_INCREMENT,
+  `conversationId` bigint(20) NOT NULL,
+  `senderId` bigint(20) NOT NULL,
+  `receiverId` bigint(20) NOT NULL,
+  `type` int(11) NOT NULL,
+  `content` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `sendTime` datetime NOT NULL,
+  `isRead` tinyint(1) NULL DEFAULT 0,
+  PRIMARY KEY (`msgId`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for notice
+-- ----------------------------
+DROP TABLE IF EXISTS `notice`;
+CREATE TABLE `notice`  (
+  `noticeId` bigint(20) NOT NULL AUTO_INCREMENT,
+  `courseId` bigint(20) NULL DEFAULT NULL,
+  `userId` bigint(20) NULL DEFAULT NULL,
+  `noticeTitle` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `noticeContent` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `noticeTime` datetime NOT NULL,
+  `isSend` tinyint(1) NULL DEFAULT 0,
+  `receiverIds` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `readUserIds` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  PRIMARY KEY (`noticeId`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for post
+-- ----------------------------
+DROP TABLE IF EXISTS `post`;
+CREATE TABLE `post`  (
+  `postId` bigint(20) NOT NULL AUTO_INCREMENT,
+  `courseId` bigint(20) NULL DEFAULT NULL,
+  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `content` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `userId` bigint(20) NOT NULL,
+  `createTime` datetime NOT NULL,
+  `fileIds` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `likeCount` int(11) NULL DEFAULT 0,
+  PRIMARY KEY (`postId`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for reply
+-- ----------------------------
+DROP TABLE IF EXISTS `reply`;
+CREATE TABLE `reply`  (
+  `replyId` bigint(20) NOT NULL AUTO_INCREMENT,
+  `postId` bigint(20) NOT NULL,
+  `userId` bigint(20) NOT NULL,
+  `content` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `createTime` datetime NOT NULL,
+  PRIMARY KEY (`replyId`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for student_course
@@ -161,7 +237,7 @@ CREATE TABLE `users`  (
   `major` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '专业',
   `age` int(11) NULL DEFAULT NULL COMMENT '年龄',
   `gender` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '性别',
-  `avatar_url` varchar(2048) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '头像url',
+  `avatar_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '头像url的文件ID',
   PRIMARY KEY (`uid`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 

@@ -1,6 +1,5 @@
 package com.hwadee.IOTS_SCS.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.hwadee.IOTS_SCS.entity.DTO.EvaluationDetailDTO;
 import com.hwadee.IOTS_SCS.entity.POJO.Evaluation;
 

@@ -1,12 +1,16 @@
 package com.hwadee.IOTS_SCS.controller;
 
 
-import com.hwadee.IOTS_SCS.entity.DTO.*;
+import com.hwadee.IOTS_SCS.entity.DTO.request.CreateDiscussionPostReq;
+import com.hwadee.IOTS_SCS.entity.DTO.request.CreateReplyReq;
+import com.hwadee.IOTS_SCS.entity.DTO.request.CreateSharingPostReq;
+import com.hwadee.IOTS_SCS.entity.DTO.response.PostDetailDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.response.PostListDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.response.ReplyDTO;
 import com.hwadee.IOTS_SCS.service.impl.PostServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 

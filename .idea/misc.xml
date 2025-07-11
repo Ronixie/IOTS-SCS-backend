@@ -5,7 +5,27 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/feng/ai-service/pom.xml" />
+        <option value="$PROJECT_DIR$/feng/common-web/pom.xml" />
+        <option value="$PROJECT_DIR$/feng/exam-service/pom.xml" />
+        <option value="$PROJECT_DIR$/feng/gateway-service/pom.xml" />
+        <option value="$PROJECT_DIR$/feng/homework-service/pom.xml" />
+        <option value="$PROJECT_DIR$/feng/knowledgebase-service/pom.xml" />
+        <option value="$PROJECT_DIR$/feng/learncenter-service/pom.xml" />
+        <option value="$PROJECT_DIR$/feng/other-service/pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/feng/ai-service/pom.xml" />
+        <option value="$PROJECT_DIR$/feng/common-web/pom.xml" />
+        <option value="$PROJECT_DIR$/feng/exam-service/pom.xml" />
+        <option value="$PROJECT_DIR$/feng/gateway-service/pom.xml" />
+        <option value="$PROJECT_DIR$/feng/homework-service/pom.xml" />
+        <option value="$PROJECT_DIR$/feng/knowledgebase-service/pom.xml" />
+        <option value="$PROJECT_DIR$/feng/learncenter-service/pom.xml" />
+        <option value="$PROJECT_DIR$/feng/other-service/pom.xml" />
+      </set>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_21" default="true" project-jdk-name="ms-21" project-jdk-type="JavaSDK">

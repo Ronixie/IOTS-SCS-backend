@@ -7,8 +7,15 @@ import com.hwadee.IOTS_SCS.entity.DTO.request.UserUpdateDTO;
 import com.hwadee.IOTS_SCS.service.UserService;
 
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 
 
 /**
@@ -65,21 +72,32 @@ public class UserController {
         return userService.updatePassword(uid, oldPassword, newPassword);
     }
 
-//    // 发送用户头像
-//    @GetMapping("/users/{uid}/avatar")
-//    public void getAvatar(
-//            @PathVariable("uid") String uid,
-//            HttpServletResponse response)
-//            throws IOException {
-//        File avatarFile = new File();
-//
-//        if(!avatarFile.exists()) avatarFile = new File("defaultAvatar.png");
-//
-//        response.setContentType("image/png");
-//        response.setHeader("Cache-Control", "no-cache");
-//        Files.copy(avatarFile.toPath(), response.getOutputStream());
-//        response.flushBuffer();
-//    }
+    // 发送用户头像
+    @GetMapping("/users/{uid}/avatar")
+    public void getAvatar(
+            @PathVariable("uid") String uid,
+            HttpServletResponse response)
+            throws IOException {
+        String avatar = userService.getUserAvatar(uid);
+
+        File avatarFile = new File("res/file/" + avatar.substring(35));
+
+        if(!avatarFile.exists()) avatarFile = new File("res/file/default/avatar.png");
+
+        response.setContentType("image/png");
+        response.setHeader("Cache-Control", "no-cache");
+        Files.copy(avatarFile.toPath(), response.getOutputStream());
+        response.flushBuffer();
+    }
+
+    @PostMapping("/users/{user_id}/avatar")
+    public CommonResult<Object> updateUserAvatar(
+            @RequestHeader("Authorization") String token,
+            HttpServletRequest request,
+            MultipartFile avatar) {
+        System.out.println("----------------------");
+        return userService.updateAvatar(avatar, token, request);
+    }
 
     // 用户登出
     @PostMapping("/auth/logout")

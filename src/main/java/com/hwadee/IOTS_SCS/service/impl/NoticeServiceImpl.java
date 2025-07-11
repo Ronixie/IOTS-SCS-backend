@@ -1,16 +1,13 @@
 package com.hwadee.IOTS_SCS.service.impl;
 
-import com.hwadee.IOTS_SCS.entity.DTO.CreateNoticeReq;
-import com.hwadee.IOTS_SCS.entity.DTO.NoticeDetailDTO;
-import com.hwadee.IOTS_SCS.entity.DTO.NoticeListDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.request.CreateNoticeReq;
+import com.hwadee.IOTS_SCS.entity.DTO.response.NoticeDetailDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.response.NoticeListDTO;
 import com.hwadee.IOTS_SCS.entity.POJO.Notice;
-import com.hwadee.IOTS_SCS.entity.POJO.User;
 import com.hwadee.IOTS_SCS.mapper.CourseMapper;
 import com.hwadee.IOTS_SCS.mapper.NoticeMapper;
 import com.hwadee.IOTS_SCS.mapper.UserMapper;
-import com.hwadee.IOTS_SCS.service.CourseService;
 import com.hwadee.IOTS_SCS.service.NoticeService;
-import com.hwadee.IOTS_SCS.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;

@@ -1,14 +1,13 @@
 package com.hwadee.IOTS_SCS.service.impl;
 
 
-import com.hwadee.IOTS_SCS.entity.DTO.ConversationDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.response.ConversationDTO;
 import com.hwadee.IOTS_SCS.entity.POJO.Conversation;
 import com.hwadee.IOTS_SCS.entity.POJO.User;
 import com.hwadee.IOTS_SCS.mapper.ConversationMapper;
 import com.hwadee.IOTS_SCS.mapper.MessageMapper;
 import com.hwadee.IOTS_SCS.mapper.UserMapper;
 import com.hwadee.IOTS_SCS.service.ConversationService;
-import com.hwadee.IOTS_SCS.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

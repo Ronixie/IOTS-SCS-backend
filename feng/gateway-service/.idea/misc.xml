@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="EntryPointsManager">
+    <list size="1">
+      <item index="0" class="java.lang.String" itemvalue="lombok.Data" />
+    </list>
+  </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/../demo1-service/pom.xml" />
+        <option value="$PROJECT_DIR$/../demo2-service/pom.xml" />
+        <option value="$PROJECT_DIR$/../kafka-service/kafka-producer/pom.xml" />
+        <option value="$PROJECT_DIR$/../kafka-service/pom.xml" />
+        <option value="$PROJECT_DIR$/../exam-service/pom.xml" />
+        <option value="$PROJECT_DIR$/common-web/pom.xml" />
+        <option value="$PROJECT_DIR$/../common-web/pom.xml" />
+        <option value="$PROJECT_DIR$/../ai-service/pom.xml" />
+        <option value="$PROJECT_DIR$/../homework-service/pom.xml" />
+        <option value="$PROJECT_DIR$/../other-service/pom.xml" />
+        <option value="$PROJECT_DIR$/../knowledgebase-service/pom.xml" />
+        <option value="$PROJECT_DIR$/../learncenter-service/pom.xml" />
+        <option value="$PROJECT_DIR$/../user-service/pom.xml" />
+        <option value="$PROJECT_DIR$/../../项目后端/IOTS-SCS-backend/pom.xml" />
+      </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/../demo1-service/pom.xml" />
+        <option value="$PROJECT_DIR$/../demo2-service/pom.xml" />
+        <option value="$PROJECT_DIR$/../kafka-service/kafka-consumer/pom.xml" />
+        <option value="$PROJECT_DIR$/../kafka-service/kafka-producer/pom.xml" />
+        <option value="$PROJECT_DIR$/../kafka-service/pom.xml" />
+        <option value="$PROJECT_DIR$/../user-service/pom.xml" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="17" project-jdk-type="JavaSDK" />
+</project>

@@ -20,10 +20,10 @@ spring:
     property-naming-strategy: SNAKE_CASE
 
   mail:
-    host: smtp.example.com
+    host: smtp.qq.com               # 邮件服务器地址，例如 QQ 邮箱
     port: 587
-    username: your@email.com
-    password: yourpassword
+    username: system@yourdomain.com  # 邮箱
+    password: 1111111          # 不是邮箱密码，是授权码
     properties:
       mail:
         smtp:
@@ -32,11 +32,15 @@ spring:
             enable: true
 
 
+
+
 mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.hwadee.IOTS_SCS.entity.POJO
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  type-handlers-package: com.hwadee.IOTS_SCS.util
+
 
 jwt:
   secret: "nakl24rsjfhhrla8u24325ha"

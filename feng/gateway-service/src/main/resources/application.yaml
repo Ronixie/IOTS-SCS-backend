@@ -1,0 +1,20 @@
+server:
+  port: 8080
+csu:
+  auth:
+    excludePaths:
+      - /api/exam/temp
+      - /api/knowledge/**
+      - /api/users/**
+      - /messages/**
+      - /api/admin/**
+      - /conversations/**
+      - /api/courses/**
+      - /api/evaluation/**
+      - /api/files/**
+      - /api/notice/**
+      - /api/auth/**
+      - /api/users/**
+    # 前端请求头名称
+    front-long-token-name: RefreshToken
+    front-short-token-name: Authorization

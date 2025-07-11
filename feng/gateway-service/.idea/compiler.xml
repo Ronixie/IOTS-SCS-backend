@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="learncenter-service" />
+        <module name="homework-service" />
+        <module name="gateway-service" />
+        <module name="knowledgebase-service" />
+        <module name="common-web" />
+        <module name="other-service" />
+        <module name="exam-service" />
+        <module name="ai-service" />
+      </profile>
+      <profile name="Annotation profile for IOTS_SCS_backend" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$PROJECT_DIR$/../../../apache-maven-3.8.8/mvn_repository/org/projectlombok/lombok/1.18.38/lombok-1.18.38.jar" />
+        </processorPath>
+        <module name="IOTS_SCS_backend" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="demo1-service" target="17" />
+      <module name="demo2-service" target="17" />
+      <module name="kafka-consumer" target="17" />
+      <module name="kafka-producer" target="17" />
+      <module name="kafka-service" target="17" />
+      <module name="user-service" target="17" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="IOTS_SCS_backend" options="-parameters" />
+      <module name="ai-service" options="-parameters" />
+      <module name="exam-service" options="-parameters" />
+      <module name="homework-service" options="-parameters" />
+      <module name="knowledgebase-service" options="-parameters" />
+      <module name="learncenter-service" options="-parameters" />
+      <module name="other-service" options="-parameters" />
+      <module name="user-service" options="-parameters" />
+    </option>
+  </component>
+</project>

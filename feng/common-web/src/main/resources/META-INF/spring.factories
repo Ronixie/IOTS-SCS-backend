@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  org.csu.config.WebConfig ,\
+  org.csu.config.BeansConfig,\
+  org.csu.config.MybatisPlusConfig

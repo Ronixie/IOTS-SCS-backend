@@ -122,4 +122,14 @@
     <select id="getCourseName" resultType="String">
         SELECT course_name FROM courses WHERE course_id=#{courseId};
     </select>
+
+    <select id="getRes" resultType="com.hwadee.IOTS_SCS.entity.DTO.response.LessonResDTO">
+        SELECT lesson_id, lesson_title, resource_type, file_id, allow_download FROM lessons
+        WHERE course_id=#{courseId};
+    </select>
+
+    <select id="getVideo" resultType="com.hwadee.IOTS_SCS.entity.DTO.response.LessonVideoDTO">
+        SELECT video_file_id FROM lessons
+        WHERE course_id=#{courseId};
+    </select>
 </mapper>

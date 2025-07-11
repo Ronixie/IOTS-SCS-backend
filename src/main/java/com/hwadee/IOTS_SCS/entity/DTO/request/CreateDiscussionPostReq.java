@@ -1,5 +1,6 @@
 package com.hwadee.IOTS_SCS.entity.DTO.request;
 
+import com.hwadee.IOTS_SCS.entity.POJO.FileInfo;
 import lombok.Data;
 
 import java.util.List;

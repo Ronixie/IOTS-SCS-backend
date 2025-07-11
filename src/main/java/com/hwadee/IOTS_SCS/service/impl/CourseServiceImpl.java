@@ -10,6 +10,7 @@ import com.hwadee.IOTS_SCS.entity.POJO.Enrollment;
 import com.hwadee.IOTS_SCS.entity.POJO.Lesson;
 import com.hwadee.IOTS_SCS.entity.POJO.Progress;
 import com.hwadee.IOTS_SCS.mapper.CourseMapper;
+import com.hwadee.IOTS_SCS.mapper.EnrollmentMapper;
 import com.hwadee.IOTS_SCS.service.CourseService;
 import com.hwadee.IOTS_SCS.util.AIUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,8 @@ public class CourseServiceImpl implements CourseService {
     @Autowired
     private CourseMapper courseMapper;
 
+    @Autowired
+    private EnrollmentMapper enrollmentMapper;
     /**
      *
      * @param status 所查看的课程状态
@@ -148,6 +151,15 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public List<Long> getStudentIdsByCourseId(Long courseId) {
+        return enrollmentMapper.getStudentsIdsByCourseId(courseId);
+    }
+
+    @Override
+    public String getCourseName(Long courseId) {
+        return courseMapper.getCourseName(String.valueOf(courseId));
+    }
+
     public CommonResult<IPage<LessonResDTO>> getResources(String courseId) {
         IPage<LessonResDTO> res = courseMapper.getRes(new Page<>(), courseId);
         return CommonResult.success(res);

@@ -23,7 +23,7 @@ public class PostController {
     // 创建帖子
     @PostMapping("/createDiscussionPost")
     public ResponseEntity<PostDetailDTO> createDiscussionPost(
-            @RequestPart("request") CreateDiscussionPostReq request
+            @RequestBody CreateDiscussionPostReq request
     ) {
         PostDetailDTO dto = postService.createDiscussionPost(request);
         return ResponseEntity.ok(dto);

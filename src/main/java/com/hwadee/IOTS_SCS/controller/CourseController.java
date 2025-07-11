@@ -4,10 +4,15 @@ import com.alibaba.dashscope.exception.InputRequiredException;
 import com.alibaba.dashscope.exception.NoApiKeyException;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.hwadee.IOTS_SCS.common.result.CommonResult;
-import com.hwadee.IOTS_SCS.entity.DTO.response.*;
+import com.hwadee.IOTS_SCS.entity.DTO.response.CourseInfoDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.response.CourseSimpleDTO;
+import com.hwadee.IOTS_SCS.entity.DTO.response.ProgressDTO;
+import com.hwadee.IOTS_SCS.entity.POJO.Course;
 import com.hwadee.IOTS_SCS.entity.POJO.Lesson;
 import com.hwadee.IOTS_SCS.service.CourseService;
 import com.hwadee.IOTS_SCS.util.JwtUtil;
+
+import org.csu.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -95,14 +100,13 @@ public class CourseController {
         return courseService.generateSuggestion(uidFromToken);
     }
 
-    @GetMapping("/{course_id}/lessons/resources")
-    public CommonResult<IPage<LessonResDTO>> getResources(
-            @PathVariable("course_id") String courseId) {
-        return courseService.getResources(courseId);
+    @GetMapping("/inner/name/{courseId}")
+    public Result<String> getCourseName(@PathVariable("courseId") Long courseId) {
+        return Result.success(courseService.getCourseName(courseId));
     }
 
-    @GetMapping("/{course_id}/lessons/video")
-    public CommonResult<IPage<LessonVideoDTO>> getVideo(@PathVariable("course_id") String courseId) {
-        return courseService.getVideo(courseId);
+    @GetMapping("/inner/students/{courseId}")
+    public Result<List<Long>> getStudentIdsByCourseId(@PathVariable("courseId") Long courseId) {
+        return Result.success(courseService.getStudentIdsByCourseId(courseId));
     }
 }

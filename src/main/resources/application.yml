@@ -1,18 +1,23 @@
 spring:
   application:
-    name: IOTS_SCS_backend
+    name: back-service
 
   datasource:
-    url: jdbc:mysql://localhost:3306/smart_study?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://192.168.1.135:3306/smart_study?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: test
-    password: test
-
+    username: root
+    password: root
+  cloud:
+    nacos:
+      server-addr: 192.168.1.135:8848
+    openfeign:
+      okhttp:
+        enabled: true
   data:
     redis:
-      host: 192.168.2.98
+      host: 192.168.1.135
       port: 6379
-      password: hwadee
+      password: 123456
       timeout: 5000
       database: 10
 
@@ -47,7 +52,7 @@ jwt:
   expiration: 86400000
 
 server:
-  port: 8080
+  port: 0
 
 log4j:
   rootLogger: debug,stdout

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,7 +41,7 @@ public class NoticeServiceImpl implements NoticeService {
         notice.setUserId(createNoticeReq.getUserId());
         notice.setNoticeTime(createNoticeReq.getNoticeTime());
         notice.setReceiverIds(createNoticeReq.getReceiverIds());
-        notice.setIsSend(false);
+        notice.setIsSend('0');
         noticeMapper.insert(notice);
     }
 
@@ -97,11 +98,16 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     @Scheduled(fixedRate = 60000)
     public void sendNotice() {
-        List<Notice> noticeList = noticeMapper.getNoticeListByIsSend(false);
+        List<Notice> noticeList = noticeMapper.getNoticeListByIsSend('0');
         for (Notice notice : noticeList) {
-            if(notice.getNoticeTime() == null || notice.getNoticeTime().before(new Date())) {
-                notice.setIsSend(true);
-                sendNoticeToMail(notice.getNoticeId());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            calendar.add(Calendar.HOUR, 8);
+            Date now = calendar.getTime();
+
+            if(notice.getNoticeTime() == null || (notice.getNoticeTime()).before(now)) {
+                notice.setIsSend('1');
+                //sendNoticeToMail(notice.getNoticeId());
             }
             noticeMapper.update(notice);
         }

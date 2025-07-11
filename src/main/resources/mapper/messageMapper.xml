@@ -52,7 +52,7 @@
         UPDATE message
         SET is_read = 1
         WHERE conversation_id = #{conversationId}
-        AND receiver_id = #{currentUserId}
+        AND receiver_id = #{userId}
         AND is_read = 0
     </update>
 

@@ -1,27 +1,32 @@
 package com.hwadee.IOTS_SCS.util;
 
 import io.jsonwebtoken.*;
+import lombok.RequiredArgsConstructor;
+import org.csu.utils.TokenTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
 import java.util.Date;
 
 
 /**
-* @ProjectName: IOTS-SCS-backend
-* @Title: JwtUtil
-* @Package: com.hwadee.IOTS_SCS.util
-* @Description: Jwt工具类
-* @author qiershi
-* @date 2025/7/1 10:59
-* @version V1.0
-* Copyright (c) 2025, qiershi2006@h163.com All Rights Reserved.
-*/
+ * @author qiershi
+ * @version V1.0
+ * Copyright (c) 2025, qiershi2006@h163.com All Rights Reserved.
+ * @ProjectName: IOTS-SCS-backend
+ * @Title: JwtUtil
+ * @Package: com.hwadee.IOTS_SCS.util
+ * @Description: Jwt工具类
+ * @date 2025/7/1 10:59
+ */
 @Component
+@RequiredArgsConstructor
 public class JwtUtil {
 
     private static final Logger log = LoggerFactory.getLogger(JwtUtil.class);
+    private final TokenTools tokenTools;
 
     @Value("${jwt.secret}")
     private String secret;
@@ -30,12 +35,13 @@ public class JwtUtil {
     private Long expiration;
 
     public String generateToken(String uid) {
-        return Jwts.builder()
+        /*return Jwts.builder()
                 .setSubject(uid)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(SignatureAlgorithm.HS512, secret) // 旧版直接传 secret
-                .compact();
+                .compact();*/
+        return tokenTools.createShortToken(Long.parseLong(uid));
     }
 
     public String getUidFromToken(String token) {
@@ -43,18 +49,20 @@ public class JwtUtil {
             token = token.substring(7);
         }
 
-        return Jwts.parser()
+/*        return Jwts.parser()
                 .setSigningKey(secret)
                 .parseClaimsJws(token)
                 .getBody()
-                .getSubject();
+                .getSubject();*/
+        return String.valueOf(tokenTools.parseShortToken(token));
     }
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser()
+            /*Jwts.parser()
                     .setSigningKey(secret)
-                    .parseClaimsJws(token);
+                    .parseClaimsJws(token);*/
+            tokenTools.parseShortToken(token);
             return true;
         } catch (SignatureException e) {
             log.error("Invalid JWT signature: {}", e.getMessage());

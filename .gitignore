@@ -36,3 +36,8 @@ build/
 
 ### Mac OS ###
 .DS_Store
+src/main/resources/mapper/ConversationMapper.xml
+src/main/resources/mapper/MessageMapper.xml
+src/main/resources/mapper/NoticeMapper.xml
+src/main/resources/mapper/PostMapper.xml
+src/main/resources/mapper/ReplyMapper.xml

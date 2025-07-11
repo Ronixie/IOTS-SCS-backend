@@ -6,6 +6,13 @@ import com.hwadee.IOTS_SCS.entity.DTO.request.CreateSharingPostReq;
 import com.hwadee.IOTS_SCS.entity.DTO.response.PostDetailDTO;
 import com.hwadee.IOTS_SCS.entity.DTO.response.PostListDTO;
 import com.hwadee.IOTS_SCS.entity.DTO.response.ReplyDTO;
+import com.hwadee.IOTS_SCS.entity.POJO.Post;
+import com.hwadee.IOTS_SCS.entity.POJO.Reply;
+import com.hwadee.IOTS_SCS.entity.POJO.User;
+import com.hwadee.IOTS_SCS.mapper.CourseMapper;
+import com.hwadee.IOTS_SCS.mapper.PostMapper;
+import com.hwadee.IOTS_SCS.mapper.ReplyMapper;
+import com.hwadee.IOTS_SCS.mapper.UserMapper;
 import com.hwadee.IOTS_SCS.entity.POJO.FileInfo;
 import com.hwadee.IOTS_SCS.entity.POJO.Post;
 import com.hwadee.IOTS_SCS.entity.POJO.Reply;
@@ -48,15 +55,17 @@ public class PostServiceImpl implements PostService {
         post.setUserId(request.getUserId());
         post.setCourseId(request.getCourseId());
         post.setCreateTime(new Date());
+        post.setLikeCount(0L);
         postMapper.insert(post);
 
         // 处理文件上传
-        List<String> reqFileIds = request.getFileIds();
+
+/*        List<String> reqFileIds = request.getFileIds();
         List<String> postFileIds = new ArrayList<>();
         for(String fileId : reqFileIds) {
             postFileIds.add(fileId);
         }
-        post.setFileIds(postFileIds);
+        post.setFileIds(postFileIds);*/
 
         return getPostDetail(post.getPostId());
     }
@@ -73,6 +82,8 @@ public class PostServiceImpl implements PostService {
         postMapper.insert(post);
 
         // 文件上传
+
+
         List<String> reqFileIds = request.getFileIds();
         List<String> postFileIds = new ArrayList<>();
         for(String fileId : reqFileIds) {
@@ -116,7 +127,7 @@ public class PostServiceImpl implements PostService {
         dto.setUserId(post.getUserId());
         dto.setUserName(author.getName());
         dto.setAvatar(author.getAvatarUrl());
-
+        dto.setLikeCount(post.getLikeCount());
         // 课程信息
         if (post.getCourseId() != null) {
             dto.setCourseId(post.getCourseId());
@@ -127,7 +138,7 @@ public class PostServiceImpl implements PostService {
         dto.setReplies(replies.stream().map(reply -> {
             ReplyDTO rDto = new ReplyDTO();
             rDto.setReplyId(reply.getReplyId());
-            rDto.setOfPostId(reply.getOfPostId());
+            rDto.setOfPostId(reply.getPostId());
             rDto.setContent(reply.getContent());
             rDto.setCreateTime(reply.getCreateTime());
 
@@ -161,7 +172,7 @@ public class PostServiceImpl implements PostService {
     public ReplyDTO createReply(CreateReplyReq request) {
         //创建回复
         Reply reply = new Reply();
-        reply.setOfPostId(request.getPostId());
+        reply.setPostId(request.getPostId());
         reply.setUserId(request.getUserId());
         reply.setContent(request.getContent());
         reply.setCreateTime(new Date());
@@ -170,7 +181,7 @@ public class PostServiceImpl implements PostService {
         //回复DTO
         ReplyDTO dto = new ReplyDTO();
         dto.setReplyId(reply.getReplyId());
-        dto.setOfPostId(reply.getOfPostId());
+        dto.setOfPostId(reply.getPostId());
         dto.setUserId(reply.getUserId());
         dto.setContent(reply.getContent());
         dto.setCreateTime(reply.getCreateTime());
@@ -197,7 +208,7 @@ public class PostServiceImpl implements PostService {
             dto.setCreateTime(post.getCreateTime());
             dto.setReplyCount(Integer.toUnsignedLong(replyMapper.findByPostId(post.getPostId()).size()));
             dto.setLikeCount(post.getLikeCount());
-
+            dto.setPreview(post.getContent().substring(0, Math.min(100, post.getContent().length()))+"...");
             User userInfo = userMapper.getUidUser(String.valueOf(post.getUserId()));
             dto.setUserName(userInfo.getName());
             dto.setAvatar(userInfo.getAvatarUrl());

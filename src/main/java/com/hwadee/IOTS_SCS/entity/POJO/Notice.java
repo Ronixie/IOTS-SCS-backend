@@ -13,7 +13,7 @@ public class Notice {
     private String noticeTitle;
     private String noticeContent;
     private Date noticeTime;
-    private Boolean isSend;
+    private char isSend;
     private List<Long> receiverIds;
     private List<Long> readUserIds;
 }

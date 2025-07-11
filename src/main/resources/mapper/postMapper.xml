@@ -17,13 +17,13 @@
     </resultMap>
 
     <!-- 插入帖子 -->
-    <insert id="insert" parameterType="com.hwadee.IOTS_SCS.entity.POJO.Post">
+    <!--<insert id="insert" parameterType="com.hwadee.IOTS_SCS.entity.POJO.Post">
         INSERT INTO post (
-            post_id, course_id, title, content, user_id, create_time, file_ids, like_count
+            post_id,course_id, title, content, user_id, create_time,like_count
         ) VALUES (
-                     #{postId}, #{courseId}, #{title}, #{content}, #{userId}, #{createTime}, #{fileIds}, #{likeCount}
+                     #{postId},#{courseId}, #{title}, #{content}, #{userId}, #{createTime}, #{likeCount}
                  )
-    </insert>
+    </insert>-->
 
     <!-- 根据ID查询帖子 -->
     <select id="findById" parameterType="Long" resultMap="PostResultMap">

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hwadee.IOTS_SCS.mapper.EnrollmentMapper">
+
+    <select id="getStudentsIdsByCourseId" resultType="java.lang.Long" parameterType="java.lang.Long">
+        select student_id from student_course where course_id = #{courseId}
+    </select>
+    <select id="getCourseIdsByUid" resultType="java.lang.Long" parameterType="java.lang.Long">
+        select course_id from student_course where student_id = #{uid}
+    </select>
+</mapper>

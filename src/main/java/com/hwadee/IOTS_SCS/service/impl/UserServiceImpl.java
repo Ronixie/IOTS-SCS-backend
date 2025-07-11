@@ -1,10 +1,13 @@
 package com.hwadee.IOTS_SCS.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.hwadee.IOTS_SCS.common.result.CommonResult;
 import com.hwadee.IOTS_SCS.entity.DTO.request.UserUpdateDTO;
 import com.hwadee.IOTS_SCS.entity.DTO.response.FileInfoDTO;
 import com.hwadee.IOTS_SCS.entity.POJO.ApiAccessLog;
 import com.hwadee.IOTS_SCS.entity.POJO.User;
+import com.hwadee.IOTS_SCS.entity.vo.UserVO;
+import com.hwadee.IOTS_SCS.mapper.EnrollmentMapper;
 import com.hwadee.IOTS_SCS.mapper.UserMapper;
 import com.hwadee.IOTS_SCS.service.FileService;
 import com.hwadee.IOTS_SCS.service.LogService;
@@ -19,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author qiershi
@@ -44,6 +48,7 @@ public class UserServiceImpl implements UserService {
     private LogService logService;
 
     @Autowired
+    private EnrollmentMapper enrollmentMapper;
     private FileService fileService;
 
     /**
@@ -120,6 +125,17 @@ public class UserServiceImpl implements UserService {
         else return CommonResult.error(404,"修改失败");
     }
 
+    @Override
+    public UserVO getById(Long uid) {
+        User u=userMapper.getUidUser(String.valueOf(uid));
+        return BeanUtil.copyProperties(u, UserVO.class);
+    }
+
+    @Override
+    public List<Long> getCourseIdsByUid(Long uid) {
+        return enrollmentMapper.getCourseIdsByUid(uid);
+    }
+
     /**
      *
      * @return 删除用户登录服务器信息
@@ -138,7 +154,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public CommonResult<Object> updateAvatar(MultipartFile file,String token, HttpServletRequest request) {
-        FileInfoDTO avatarInfo = fileService.upload(file, "用户头像", token, request);
+        FileInfoDTO avatarInfo = fileService.uploadAvatar(file, token, request);
         return CommonResult.success(avatarInfo);
     }
 

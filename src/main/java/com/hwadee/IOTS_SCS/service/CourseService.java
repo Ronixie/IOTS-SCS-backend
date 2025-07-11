@@ -20,6 +20,10 @@ public interface CourseService {
     CommonResult<List<ProgressDTO>> getCourseProgress(String uid, String courseId);
     void videoProgress(String lessonId, String uid, int currentTime);
     void addStudentCourse(String uid, String courseId);
+
+    List<Long> getStudentIdsByCourseId(Long courseId);
+
+    String getCourseName(Long courseId);
     CommonResult<IPage<LessonResDTO>> getResources(String courseId);
     CommonResult<IPage<LessonVideoDTO>> getVideo(String courseId);
 }

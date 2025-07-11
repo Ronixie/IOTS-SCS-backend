@@ -1,3 +1,4 @@
+// 文件路径: com/hwadee/IOTS_SCS/controller/NoteController.java
 package com.hwadee.IOTS_SCS.controller;
 
 import com.hwadee.IOTS_SCS.entity.DTO.CreateNoteDTO;

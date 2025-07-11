@@ -1,6 +1,7 @@
 // 文件: com.hwadee.IOTS_SCS/controller/EvaluationController.java
 package com.hwadee.IOTS_SCS.controller;
 
+import ch.qos.logback.classic.Logger;
 import com.hwadee.IOTS_SCS.common.result.CommonResult;
 import com.hwadee.IOTS_SCS.entity.DTO.EvaluationDetailDTO;
 import com.hwadee.IOTS_SCS.entity.DTO.EvaluationDTO;
@@ -12,19 +13,20 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.hwadee.IOTS_SCS.util.JwtUtil.log;
+
+
 @RestController
 @RequestMapping("/api/evaluations")
 public class CourseEvaluationController {
 
     @Autowired
     private CourseEvaluationService courseEvaluationService;
-
     /**
      * 添加评价（前端提交评价时调用）
      */
     @PostMapping
     public CommonResult addEvaluation(@Validated @RequestBody EvaluationDTO evaluationDTO) {
-        // 将 DTO 转换为 POJO（仅评价数据）
         Evaluation evaluation = convertToPOJO(evaluationDTO);
         courseEvaluationService.addEvaluation(evaluation);
         return CommonResult.success("评价提交成功");

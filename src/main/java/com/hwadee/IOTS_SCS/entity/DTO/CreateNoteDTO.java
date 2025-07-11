@@ -2,6 +2,7 @@
 package com.hwadee.IOTS_SCS.entity.DTO;
 
 import lombok.Data;
+import java.time.LocalDateTime;
 
 @Data
 public class CreateNoteDTO {

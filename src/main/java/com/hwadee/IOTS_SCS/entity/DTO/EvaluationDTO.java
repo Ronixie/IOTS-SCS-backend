@@ -6,19 +6,9 @@ import lombok.Data;
 @Data
 public class EvaluationDTO {
     private Long courseId;
-
-
-    private Integer contentEvaluation;
-
-
-    private Integer serviceEvaluation;
-
-
-    private Integer attitudeEvaluation;
-
-
-    private Integer effectEvaluation;
-
-
+    private int contentEvaluation;
+    private int serviceEvaluation;
+    private int attitudeEvaluation;
+    private int effectEvaluation;
     private String evaluationContent;
 }

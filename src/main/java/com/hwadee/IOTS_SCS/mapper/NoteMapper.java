@@ -1,3 +1,4 @@
+// 文件路径: com/hwadee/IOTS_SCS/mapper/NoteMapper.java
 package com.hwadee.IOTS_SCS.mapper;
 
 import com.hwadee.IOTS_SCS.entity.POJO.Note;
